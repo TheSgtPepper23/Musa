@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXProgressBar?>
+<?import com.jfoenix.controls.JFXSlider?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TreeTableColumn?>
+<?import javafx.scene.control.TreeTableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="games.rockola.musa.controlador.PrincipalController">
+   <top>
+      <AnchorPane prefHeight="150.0" prefWidth="1152.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox prefHeight="150.0" prefWidth="1152.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Pane prefHeight="150.0" prefWidth="255.0">
+                     <children>
+                        <ImageView fitHeight="80.0" fitWidth="80.0" layoutX="12.0" layoutY="13.0" pickOnBounds="true">
+                           <image>
+                              <Image url="@../images/albumPlaceholder.jpg" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="99.0" layoutY="14.0" text="Título">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="100.0" layoutY="53.0" text="Artista">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <JFXSlider layoutX="48.0" layoutY="111.0" prefHeight="15.0" prefWidth="195.0" />
+                        <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="13.0" layoutY="102.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/volumenIcon.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </Pane>
+                  <VBox alignment="CENTER" prefHeight="150.0" prefWidth="750.0">
+                     <children>
+                        <HBox prefHeight="22.0" prefWidth="750.0" VBox.vgrow="NEVER">
+                           <children>
+                              <Label text="00:00" />
+                              <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                              <Label text="3:50" />
+                           </children>
+                        </HBox>
+                        <JFXProgressBar prefHeight="4.0" prefWidth="757.0" progress="0.76" />
+                        <HBox alignment="CENTER" prefHeight="53.0" prefWidth="710.0" spacing="5.0" VBox.vgrow="NEVER">
+                           <children>
+                              <JFXButton contentDisplay="CENTER" maxHeight="20.0" maxWidth="20.0" minHeight="25.0" minWidth="25.0" prefHeight="25.0" prefWidth="25.0">
+                                 <graphic>
+                                    <FontAwesomeIconView fill="WHITE" glyphName="REPEAT" size="12" stroke="WHITE" strokeLineCap="ROUND" strokeWidth="0.0" text="" />
+                                 </graphic></JFXButton>
+                              <JFXButton contentDisplay="CENTER" ellipsisString="" prefHeight="30.0" prefWidth="30.0" text=" ">
+                                 <graphic>
+                                    <FontAwesomeIconView fill="WHITE" glyphName="BACKWARD" size="15" stroke="WHITE" strokeLineCap="ROUND" textAlignment="CENTER" />
+                                 </graphic></JFXButton>
+                              <JFXButton contentDisplay="CENTER" ellipsisString="" prefHeight="40.0" prefWidth="40.0" style="-fx-border-radius: 20;" text=" " textAlignment="CENTER">
+                                 <graphic>
+                                    <FontAwesomeIconView fill="WHITE" glyphName="PLAY" size="20" stroke="WHITE" strokeLineCap="ROUND" strokeWidth="4.0" />
+                                 </graphic></JFXButton>
+                              <JFXButton contentDisplay="CENTER" ellipsisString="" prefHeight="30.0" prefWidth="30.0" text=" ">
+                                 <graphic>
+                                    <FontAwesomeIconView fill="WHITE" glyphName="FORWARD" size="15" stroke="WHITE" strokeLineCap="ROUND" />
+                                 </graphic></JFXButton>
+                              <JFXButton contentDisplay="CENTER" ellipsisString="" minHeight="25.0" minWidth="25.0" prefHeight="25.0" prefWidth="25.0">
+                                 <graphic>
+                                    <FontAwesomeIconView fill="WHITE" glyphName="RANDOM" size="12" stroke="WHITE" strokeLineCap="ROUND" strokeWidth="0.0" />
+                                 </graphic></JFXButton>
+                           </children>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets left="20.0" right="20.0" />
+                     </padding>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+   </top>
+   <center>
+      <SplitPane dividerPositions="0.23565217391304347" prefHeight="570.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <items>
+          <AnchorPane maxWidth="250.0" minHeight="0.0" minWidth="230.0" prefHeight="570.0" prefWidth="230.0">
+               <children>
+                  <JFXTreeTableView layoutX="-9.0" layoutY="70.0" prefHeight="453.0" prefWidth="250.0" AnchorPane.bottomAnchor="117.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <columns>
+                        <TreeTableColumn prefWidth="75.0" text="Column X" />
+                     </columns>
+                     <columnResizePolicy>
+                        <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </JFXTreeTableView>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="570.0" prefWidth="100.0">
+               <children>
+                  <VBox alignment="TOP_CENTER">
+                     <children>
+                        <Pane prefHeight="100.0" prefWidth="894.0" />
+                        <JFXTreeTableView prefHeight="470.0" prefWidth="894.0">
+                           <columns>
+                              <TreeTableColumn prefWidth="75.0" text="Título" />
+                              <TreeTableColumn prefWidth="75.0" text="Artista" />
+                              <TreeTableColumn prefWidth="75.0" text="Album" />
+                              <TreeTableColumn prefWidth="75.0" text="Agregado" />
+                              <TreeTableColumn prefWidth="75.0" text="Duración" />
+                           </columns>
+                           <columnResizePolicy>
+                              <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </JFXTreeTableView>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </center>
+</BorderPane>

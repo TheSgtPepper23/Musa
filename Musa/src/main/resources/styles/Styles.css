@@ -1,0 +1,70 @@
+VBox, HBox, AnchorPane, BordePane, Pane, JFXTreeTableView{
+    -fx-background-color: #454545;
+}
+
+JFXButton {
+    -fx-text-fill: white;
+    -fx-background-color: #0085d7;
+}
+
+Label {
+     -fx-text-fill: white;
+}
+
+JFXTextField, JFXPasswordField {
+    -fx-prompt-text-fill: white;
+    -jfx-focus-color: #0085d7;
+    -jfx-unfocus-color: white;
+    -fx-text-fill: white;
+}
+
+Hyperlink {
+    -fx-text-fill: white;
+}
+
+.jfx-slider > .track {
+     -fx-background-color: white;
+}
+
+.jfx-slider > .thumb {
+     -fx-background-color: #0085d7;
+}
+
+.jfx-slider > .colored-track {
+     -fx-background-color: #0085d7;
+}
+
+.jfx-slider > .animated-thumb {
+     -fx-background-color: #0085d7;
+}
+
+.jfx-slider .slider-value {
+     -fx-fill: white;
+     -fx-stroke: white;
+}
+
+.split-pane > .split-pane-divider {
+   -fx-background-color: #3d3c3c;
+}
+
+SplitPane {
+    -fx-padding: 0;
+}
+
+.tree-table-view .column-header{
+    -fx-border-width: 0;
+}
+
+.jfx-progress-bar > .track, .jfx-progress-bar > .bar {
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+}
+
+.jfx-progress-bar > .bar {
+    -fx-background-color: #0085d7;
+}
+
+controlMusica{
+    -fx-pref-height: 30px;
+    -fx-pref-width: 30px;
+}

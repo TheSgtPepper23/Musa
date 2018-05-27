@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1152.0" styleClass="mainFxmlClass" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="games.rockola.musa.controlador.LoginController">
+   <children>
+      <VBox alignment="TOP_CENTER" layoutX="388.0" layoutY="368.0" prefHeight="720.0" prefWidth="1152.0" spacing="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <padding>
+            <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+         </padding>
+         <children>
+            <ImageView fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/Musa_sin_fondo.png" />
+               </image>
+            </ImageView>
+            <JFXTextField fx:id="txtNombre" labelFloat="true" maxWidth="400.0" minWidth="400.0" prefWidth="400.0" promptText="Nombre de usuario">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXTextField>
+            <JFXTextField fx:id="txtContra" labelFloat="true" maxWidth="400.0" minWidth="400.0" prefWidth="400.0" promptText="Contraseña">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXTextField>
+            <JFXButton fx:id="btnIniciarSesion" defaultButton="true" maxHeight="40.0" maxWidth="152.0" onAction="#iniciarSesion" text="Iniciar sesión">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </JFXButton>
+            <HBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="50.0" VBox.vgrow="NEVER">
+               <children>
+                  <Hyperlink fx:id="linkRegistro" text="Registrarse" />
+                  <Hyperlink fx:id="linkRecuperacion" text="¿Olvidó su contraseña?" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
