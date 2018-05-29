@@ -20,7 +20,6 @@ public class MainApp extends Application {
         root = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
         
         Scene scene = new Scene(root, 1152, 720);
-        scene.getStylesheets().add("/styles/Styles.css");
         
         stage.setTitle("JavaFX and Maven");
         stage.setScene(scene);

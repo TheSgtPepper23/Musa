@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1152.0" styleClass="mainFxmlClass" stylesheets="@../styles/Styles.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.141" fx:controller="games.rockola.musa.controlador.RegistroController">
+   <children>
+      <VBox alignment="CENTER" layoutX="360.0" layoutY="291.0" prefHeight="1011.0" prefWidth="1512.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/Musa_sin_fondo.png" />
+               </image>
+            </ImageView>
+            <JFXTextField fx:id="tfCorreo" labelFloat="true" promptText="Correo Electrónico">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </JFXTextField>
+            <JFXTextField fx:id="tfNombreUsuario" labelFloat="true" promptText="Nombre de usuario">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </JFXTextField>
+            <JFXTextField fx:id="tfNombre" labelFloat="true" promptText="Nombre">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </JFXTextField>
+            <JFXTextField fx:id="tfApellidos" labelFloat="true" promptText="Apellidos">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </JFXTextField>
+            <JFXPasswordField fx:id="tfContra" labelFloat="true" promptText="Contraseña">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </JFXPasswordField>
+            <JFXPasswordField fx:id="tfConfirmContra" labelFloat="true" promptText="Repetir contraseña">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </JFXPasswordField>
+            <HBox alignment="CENTER" prefHeight="47.0" prefWidth="352.0" spacing="20.0" VBox.vgrow="NEVER">
+               <children>
+                  <JFXTextField fx:id="tfRuta" labelFloat="true" promptText="Ruta de imagen" HBox.hgrow="ALWAYS">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </JFXTextField>
+                  <JFXButton fx:id="btnAbrir" prefHeight="27.0" prefWidth="79.0" text="Abrir" />
+               </children>
+            </HBox>
+            <JFXButton fx:id="btnGuardar" text="Registrarse">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXButton>
+         </children>
+         <padding>
+            <Insets left="400.0" right="400.0" />
+         </padding>
+      </VBox>
+      <Hyperlink fx:id="linkInicio" layoutX="19.0" layoutY="680.0" onAction="#regresoInicio" text="Iniciar sesión" />
+   </children>
+</AnchorPane>

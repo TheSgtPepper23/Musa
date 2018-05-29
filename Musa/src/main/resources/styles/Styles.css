@@ -1,14 +1,25 @@
-VBox, HBox, AnchorPane, BordePane, Pane, JFXTreeTableView{
+AnchorPane, .Dialogos, .Dialogos:header .header-panel, .Dialogos > .button-bar > .container{
     -fx-background-color: #454545;
+}
+
+VBox, HBox, BordePane, Pane, JFXTreeTableView{
+    -fx-background-color: transparent;
 }
 
 JFXButton {
     -fx-text-fill: white;
     -fx-background-color: #0085d7;
+    -jfx-button-type: FLAT;
+}
+
+.Dialogos *.button{
+    -fx-text-fill: white;
+    -fx-background-color: #0085d7;
+    -jfx-button-type: FLAT;
 }
 
 Label {
-     -fx-text-fill: white;
+    -fx-text-fill: white;
 }
 
 JFXTextField, JFXPasswordField {
@@ -23,24 +34,24 @@ Hyperlink {
 }
 
 .jfx-slider > .track {
-     -fx-background-color: white;
+    -fx-background-color: white;
 }
 
 .jfx-slider > .thumb {
-     -fx-background-color: #0085d7;
+    -fx-background-color: #0085d7;
 }
 
 .jfx-slider > .colored-track {
-     -fx-background-color: #0085d7;
+    -fx-background-color: #0085d7;
 }
 
 .jfx-slider > .animated-thumb {
-     -fx-background-color: #0085d7;
+    -fx-background-color: #0085d7;
 }
 
 .jfx-slider .slider-value {
-     -fx-fill: white;
-     -fx-stroke: white;
+    -fx-fill: white;
+    -fx-stroke: white;
 }
 
 .split-pane > .split-pane-divider {
@@ -64,7 +75,15 @@ SplitPane {
     -fx-background-color: #0085d7;
 }
 
-controlMusica{
-    -fx-pref-height: 30px;
-    -fx-pref-width: 30px;
+.jfx-radio-button {
+    -fx-checked-color: #0085d7;
+    -fx-unchecked-color: white;
+}
+
+.jfx-rippler {
+    -fx-rippler-fill: lime;
+}
+
+.jfx-tab-pane .tab-selected-line {
+    -fx-stroke: red;
 }
