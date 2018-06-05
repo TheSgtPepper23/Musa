@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1152.0" styleClass="mainFxmlClass" stylesheets="@../styles/Styles.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.141" fx:controller="games.rockola.musa.controlador.RegistroController">
+<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1152.0" styleClass="mainFxmlClass" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="games.rockola.musa.controlador.RegistroController">
    <children>
       <VBox alignment="CENTER" layoutX="360.0" layoutY="291.0" prefHeight="1011.0" prefWidth="1512.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -58,7 +58,7 @@
                         <Font size="14.0" />
                      </font>
                   </JFXTextField>
-                  <JFXButton fx:id="btnAbrir" prefHeight="27.0" prefWidth="79.0" text="Abrir" />
+                  <JFXButton fx:id="btnAbrir" onAction="#seleccionarFoto" prefHeight="27.0" prefWidth="79.0" text="Abrir" />
                </children>
             </HBox>
             <JFXButton fx:id="btnGuardar" text="Registrarse">

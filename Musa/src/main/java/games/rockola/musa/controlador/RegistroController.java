@@ -3,16 +3,14 @@ package games.rockola.musa.controlador;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import games.rockola.musa.MainApp;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Hyperlink;
-import javafx.stage.Stage;
+import javafx.stage.FileChooser;
 
 public class RegistroController implements Initializable {
     
@@ -45,29 +43,28 @@ public class RegistroController implements Initializable {
 
     @FXML
     private Hyperlink linkInicio;
-
+    
+    final FileChooser selectorArchivos = new FileChooser();
+    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
     }    
     
     @FXML
     public void regresoInicio() {
-        Parent parent = null;
+        MainApp main = new MainApp();
         try {
-            parent = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
-            
+            main.cambiarEscena(1);
         } catch (IOException ex) {
         }
-        Stage inicio = new Stage();
-        Scene escenaLogin = new Scene(parent, 1152, 720);
-        inicio.setScene(escenaLogin);
-        inicio.show();
-        Stage registro = (Stage) btnGuardar.getScene().getWindow();
-        registro.close();
+    }
+    
+    @FXML
+    public void seleccionarFoto(){
+        System.out.println("");
     }
     
 }

@@ -75,15 +75,8 @@ SplitPane {
     -fx-background-color: #0085d7;
 }
 
-.jfx-radio-button {
-    -fx-checked-color: #0085d7;
-    -fx-unchecked-color: white;
-}
-
-.jfx-rippler {
-    -fx-rippler-fill: lime;
-}
-
-.jfx-tab-pane .tab-selected-line {
-    -fx-stroke: red;
+JFXRadioButton {
+    -jfx-selected-color: #0085d7;
+    -jfx-unselected-color: white;
+    -fx-text-fill: white;
 }

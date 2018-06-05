@@ -2,25 +2,22 @@ package games.rockola.musa.controlador;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import games.rockola.musa.MainApp;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 /**
@@ -50,38 +47,25 @@ public class LoginController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
     }    
     
     @FXML
     public void iniciarSesion(){
-        Parent parent = null;
+        MainApp main = new MainApp();
         try {
-            parent = FXMLLoader.load(getClass().getResource("/fxml/Principal.fxml"));
-            
+            main.cambiarEscena(3);
         } catch (IOException ex) {
         }
-        Stage stagePrincipal = new Stage();
-        Scene escenaPrincipal = new Scene(parent, 1152, 720);
-        stagePrincipal.setScene(escenaPrincipal);
-        stagePrincipal.show();
-        Stage login = (Stage) btnIniciarSesion.getScene().getWindow();
-        login.close();
     }
     
     @FXML
     public void registrarUsuario() {
-        Parent parent = null;
+        MainApp main = new MainApp();
         try {
-            parent = FXMLLoader.load(getClass().getResource("/fxml/Registro.fxml"));
-            
+            main.cambiarEscena(2);
         } catch (IOException ex) {
         }
-        Stage registro = new Stage();
-        Scene escenaRegistro = new Scene(parent, 1152, 720);
-        registro.setScene(escenaRegistro);
-        registro.show();
-        Stage login = (Stage) btnIniciarSesion.getScene().getWindow();
-        login.close();
     }
     
     @FXML
