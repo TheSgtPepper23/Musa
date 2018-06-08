@@ -1,4 +1,4 @@
-AnchorPane, .Dialogos, .Dialogos:header .header-panel, .Dialogos > .button-bar > .container{
+AnchorPane, .Dialogos, .Dialogos:header .header-panel, .Dialogos > .button-bar > .container, JFXListView{
     -fx-background-color: #454545;
 }
 
@@ -22,7 +22,7 @@ Label {
     -fx-text-fill: white;
 }
 
-JFXTextField, JFXPasswordField {
+JFXTextField, JFXPasswordField, JFXTextArea {
     -fx-prompt-text-fill: white;
     -jfx-focus-color: #0085d7;
     -jfx-unfocus-color: white;

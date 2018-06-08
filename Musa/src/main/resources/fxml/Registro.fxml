@@ -53,7 +53,7 @@
             </JFXPasswordField>
             <HBox alignment="CENTER" prefHeight="47.0" prefWidth="352.0" spacing="20.0" VBox.vgrow="NEVER">
                <children>
-                  <JFXTextField fx:id="tfRuta" labelFloat="true" promptText="Ruta de imagen" HBox.hgrow="ALWAYS">
+                  <JFXTextField fx:id="tfRuta" editable="false" labelFloat="true" promptText="Ruta de imagen" HBox.hgrow="ALWAYS">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -61,7 +61,7 @@
                   <JFXButton fx:id="btnAbrir" onAction="#seleccionarFoto" prefHeight="27.0" prefWidth="79.0" text="Abrir" />
                </children>
             </HBox>
-            <JFXButton fx:id="btnGuardar" text="Registrarse">
+            <JFXButton fx:id="btnGuardar" onAction="#guardarUsuario" text="Registrarse">
                <font>
                   <Font size="16.0" />
                </font>

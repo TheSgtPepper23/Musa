@@ -1,5 +1,9 @@
+# -*- coding: utf-8 -*-
+
 from flask import *
 from peewee import *
+import json
+import sys
 
 app = Flask(__name__)
 
@@ -11,13 +15,20 @@ class MySQLModel(Model):
     class Meta:
         database = musa_db
 
+class Mensaje:
+    def __init__(self, error, mensaje, estado):
+        self.error = error
+        self.mensaje = mensaje
+        self.estado = estado
+
+
 class Melomano(MySQLModel):
-    nombreUsuario = CharField()
+    idMelomano = PrimaryKeyField()
+    nombreMelomano = CharField()
     nombre = CharField()
-    apPaterno = CharField()
-    apMaterno = CharField()
+    apellidos = CharField()
     password = CharField()
-    fotoPerfil = BlobField()
+    fotoPerfil = BigBitField()
     correoElectronico = CharField()
 
 class Genero(MySQLModel):
@@ -51,7 +62,7 @@ class Playlist(MySQLModel):
     idPlaylist = PrimaryKeyField()
     nombre = CharField()
     portada = BlobField()
-    nombreUsuario = ForeignKeyField(Melomano, db_column = "nombreUsuario")
+    nombreUsuario = ForeignKeyField(Melomano, db_column = "idMelomano")
 
 class CancionesPlaylist(MySQLModel):
     idPlaylist = ForeignKeyField(Playlist, db_column = "idPlaylist")
@@ -59,14 +70,14 @@ class CancionesPlaylist(MySQLModel):
 
 class Calificacion(MySQLModel):
     idCancion = ForeignKeyField(Cancion, db_column = "idCancion")
-    nombreUsuario = ForeignKeyField(Melomano, db_column = "nombreUsuario")
+    nombreUsuario = ForeignKeyField(Melomano, db_column = "idMelomano")
     calificacion = IntegerField()
 
 class CancionPropia(MySQLModel):
     idCancionPropia = PrimaryKeyField()
     nombre = CharField()
     cancion = BlobField()
-    nombreUsuario = ForeignKeyField(Melomano, db_column = "nombreUsuario")
+    nombreUsuario = ForeignKeyField(Melomano, db_column = "idMelomano")
 
 class FotoArtista(MySQLModel):
     idFoto = PrimaryKeyField()
@@ -74,7 +85,7 @@ class FotoArtista(MySQLModel):
     idArtista = ForeignKeyField(Artista, db_column = "idArtista")
 
 class Historial(MySQLModel):
-    nombreUsuario = ForeignKeyField(Melomano, db_column = "nombreUsuario")
+    nombreUsuario = ForeignKeyField(Melomano, db_column = "idMelomano")
     idCancion = ForeignKeyField(Cancion, db_column = "idCancion")
 
 def autenticar_melomano(melomano):
@@ -85,21 +96,33 @@ def autenticar_melomano(melomano):
 def main():
     return jsonify("Musa server. versión 1.0")
 
-@app.route("/melomanos/admin/agregar", methods=["POST"])
+@app.route("/melomano/agregar", methods=["POST"])
 def registrar_melomano():
     with musa_db.atomic():
         try:
             melomano = Melomano.create(
-                nombreUsuario = request.form['nombreUsuario'],
+                nombreMelomano = request.form['nombreMelomano'],
                 nombre = request.form['nombre'],
-                apPaterno = request.form['apPaterno'],
-                apMaterno = request.form['apMaterno'],
+                apellidos = request.form['apellidos'],
                 password = request.form['password'],
                 fotoPerfil = request.form['fotoPerfil'],
                 correoElectronico = request.form['correoElectronico'])
-            return jsonify("Usuario registrado")
+            mensaje = Mensaje(False, "Usuario registrado", 200)
         except IntegrityError :
-            return jsonify("Ocurrió un error")
+            mensaje = Mensaje(True, "El nombre de usuario ya existe", 400)
+    return jsonify(error = mensaje.error, mensaje = mensaje.mensaje)
+
+@app.route("/melomano/login", methods=["POST"])
+def iniciar_sesion():
+    try:
+        melomano = Melomano.get(Melomano.nombreMelomano == request.form['nombreMelomano'])
+        mensaje = Mensaje(False, "Sesión iniciada", 400)
+    except Melomano.DoesNotExist:
+        mensaje = Mensaje(True, "El nombre de usuario ya existe", 400)
+    #else:   
+    #    autenticar_melomano(melomano)
+    
+    return jsonify(error = mensaje.error, mensaje = mensaje.mensaje)
 
 if __name__ == "__main__":
-    app.run(host = '192.168.0.16', port = '5555', debug = True)
+    app.run(host = '127.0.0.1', port = '5555', debug = True)
