@@ -6,9 +6,19 @@ import javafx.scene.control.DialogPane;
 import javafx.stage.StageStyle;
 
 public class Dialogo extends Alert{
+    //Mensajes
+    //5 - Todo PERFECTO
+    //7 - Todo mal
+    //1 - Contraseña incorrecta
+    //2 - El usuario no existe
+    //3 - Lista vacia
+    //4 - Usuario registrado
+    //6 - El usuario ya existe
+    //300 - Contraseñas no coinciden
+
     
-    public Dialogo (int estado, boolean error, String contentText, ButtonType... buttons) { 
-        super(AlertType.NONE, contentText, buttons);
+    public Dialogo (String estado, ButtonType... buttons) { 
+        super(AlertType.NONE, "", buttons);
         
         //Se aplica estilo a los diálogos para mantener un aspecto consistente
         DialogPane dialog = this.getDialogPane();
@@ -16,20 +26,22 @@ public class Dialogo extends Alert{
            getClass().getResource("/styles/Styles.css").toExternalForm());
         dialog.getStyleClass().add("Dialogos");
         
-        if (estado != 200) {
-            this.setAlertType(AlertType.ERROR);
-            this.setHeaderText("¡Error!");
-            this.setTitle("¡Error!"); 
-        } else if (error) {
-            this.setAlertType(AlertType.WARNING);
-            this.setHeaderText("¡Atención!");
-            this.setTitle("¡Error!");
-        } else {
+        if (estado.equals("5") || estado.equals("4")) {
             this.setAlertType(AlertType.INFORMATION);
             this.setHeaderText("¡Éxito!");
-            this.setTitle("¡Éxito!");
+            this.setTitle("¡Éxito!"); 
+        } else if (estado.equals("1") || estado.equals("2") || estado.equals("3") || 
+                estado.equals("6") || estado.equals("300")) {
+            this.setAlertType(AlertType.WARNING);
+            this.setHeaderText("¡Atención!");
+            this.setTitle("¡Atención!");
         }
         
+        if (estado.equals("2")){
+            this.setContentText("Usuario o contraseña incorrectos");
+        } else if (estado.equals("300")) {
+            this.setContentText("Las contraseñas no coinciden");
+        }
         this.setResizable(false); 
         this.initStyle(StageStyle.UNDECORATED);
     }

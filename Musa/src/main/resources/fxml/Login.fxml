@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Hyperlink?>
@@ -22,16 +23,16 @@
                   <Image url="@../images/Musa_sin_fondo.png" />
                </image>
             </ImageView>
-            <JFXTextField fx:id="txtNombre" labelFloat="true" maxWidth="400.0" minWidth="400.0" prefWidth="400.0" promptText="Nombre de usuario">
+            <JFXTextField fx:id="tfNombre" labelFloat="true" maxWidth="400.0" minWidth="400.0" prefWidth="400.0" promptText="Nombre de usuario">
                <font>
                   <Font size="14.0" />
                </font>
             </JFXTextField>
-            <JFXTextField fx:id="txtContra" labelFloat="true" maxWidth="400.0" minWidth="400.0" prefWidth="400.0" promptText="Contraseña">
+            <JFXPasswordField fx:id="tfContra" labelFloat="true" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="400.0" promptText="Contraseña">
                <font>
                   <Font size="14.0" />
                </font>
-            </JFXTextField>
+            </JFXPasswordField>
             <JFXButton fx:id="btnIniciarSesion" defaultButton="true" maxHeight="40.0" maxWidth="152.0" onAction="#iniciarSesion" text="Iniciar sesión">
                <font>
                   <Font size="16.0" />

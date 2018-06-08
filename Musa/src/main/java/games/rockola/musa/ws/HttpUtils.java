@@ -23,6 +23,11 @@ public class HttpUtils {
                 Arrays.toString(melomano.getFotoPerfil()), melomano.getCorreoElectronico());
         return invocarServicioWeb("melomano/agregar", "POST", params);
     }
+    
+    public static Mensaje iniciarSesion(String nombreMelomano, String pass) {
+        String params = String.format("nombreMelomano=%s&password=%s", nombreMelomano, pass);
+        return invocarServicioWeb("melomano/login", "POST", params);
+    }
 
     private static Mensaje invocarServicioWeb(String url, String tipoinvocacion, String parametros){
         HttpURLConnection c = null;
@@ -60,7 +65,7 @@ public class HttpUtils {
                 StringBuilder sb = new StringBuilder();
                 String line;
                 while ((line = br.readLine()) != null) {
-                    sb.append(line+"\n");
+                    sb.append(line);
                 }
                 br.close();
                 mensaje.setMensaje(sb.toString());

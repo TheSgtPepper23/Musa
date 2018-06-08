@@ -158,10 +158,10 @@ public class RegistroController implements Initializable {
             Mensaje mensaje = HttpUtils.agregarUsuario(nuevo);
             limpiar();
 
-            Dialogo dialogo = new Dialogo(mensaje.getEstado(), mensaje.isError(), mensaje.getMensaje(), ButtonType.OK);
+            Dialogo dialogo = new Dialogo(mensaje.getMensaje(), ButtonType.OK);
             dialogo.show();
         } else {
-            Dialogo dialogo = new Dialogo(200, true, "Las contraseñas no coinciden", ButtonType.OK);
+            Dialogo dialogo = new Dialogo("300", ButtonType.OK);
             dialogo.show();
         }
         

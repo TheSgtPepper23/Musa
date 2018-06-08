@@ -14,13 +14,15 @@ class MySQLModel(Model):
     """Database model"""
     class Meta:
         database = musa_db
-
-class Mensaje:
-    def __init__(self, error, mensaje, estado):
-        self.error = error
-        self.mensaje = mensaje
-        self.estado = estado
-
+# Mensajes
+# 5 - Todo PERFECTO
+# 7 - Todo mal
+# 1 - Contraseña incorrecta
+# 2 - El usuario no existe
+# 3 - Lista vacia
+# 4 - Usuario registrado
+# 6 - El usuario ya existe
+# 300 - Contraseñas no coinciden
 
 class Melomano(MySQLModel):
     idMelomano = PrimaryKeyField()
@@ -88,10 +90,6 @@ class Historial(MySQLModel):
     nombreUsuario = ForeignKeyField(Melomano, db_column = "idMelomano")
     idCancion = ForeignKeyField(Cancion, db_column = "idCancion")
 
-def autenticar_melomano(melomano):
-    session['logged_in'] = True
-    session['username'] = melomano.nombreUsuario
-
 @app.route("/")
 def main():
     return jsonify("Musa server. versión 1.0")
@@ -107,22 +105,22 @@ def registrar_melomano():
                 password = request.form['password'],
                 fotoPerfil = request.form['fotoPerfil'],
                 correoElectronico = request.form['correoElectronico'])
-            mensaje = Mensaje(False, "Usuario registrado", 200)
+            mensaje = 4
         except IntegrityError :
-            mensaje = Mensaje(True, "El nombre de usuario ya existe", 400)
-    return jsonify(error = mensaje.error, mensaje = mensaje.mensaje)
+            mensaje = 6
+    return jsonify(mensaje)
 
 @app.route("/melomano/login", methods=["POST"])
 def iniciar_sesion():
     try:
-        melomano = Melomano.get(Melomano.nombreMelomano == request.form['nombreMelomano'])
-        mensaje = Mensaje(False, "Sesión iniciada", 400)
+        melomano = Melomano.get((Melomano.nombreMelomano == request.form['nombreMelomano']) & (Melomano.password == request.form['password']))
+        mensaje = 5
     except Melomano.DoesNotExist:
-        mensaje = Mensaje(True, "El nombre de usuario ya existe", 400)
-    #else:   
-    #    autenticar_melomano(melomano)
+        mensaje = 2
     
-    return jsonify(error = mensaje.error, mensaje = mensaje.mensaje)
+    return jsonify(mensaje)
+
+
 
 if __name__ == "__main__":
     app.run(host = '127.0.0.1', port = '5555', debug = True)

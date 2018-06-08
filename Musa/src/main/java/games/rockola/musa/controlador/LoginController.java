@@ -1,8 +1,13 @@
 package games.rockola.musa.controlador;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import games.rockola.musa.Dialogo;
 import games.rockola.musa.MainApp;
+import games.rockola.musa.ws.Cifrado;
+import games.rockola.musa.ws.HttpUtils;
+import games.rockola.musa.ws.pojos.Mensaje;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
@@ -27,10 +32,10 @@ import javafx.stage.StageStyle;
 public class LoginController implements Initializable {
     
     @FXML
-    private JFXTextField txtNombre;
+    private JFXTextField tfNombre;
 
     @FXML
-    private JFXTextField txtContra;
+    private JFXPasswordField tfContra;
 
     @FXML
     private JFXButton btnIniciarSesion;
@@ -47,15 +52,30 @@ public class LoginController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        btnIniciarSesion.setDisable(true);
+        tfNombre.textProperty().addListener((observable) -> {
+            activarInicio();
+        });
         
+        tfContra.textProperty().addListener((observable) -> {
+            activarInicio();
+        });
     }    
     
     @FXML
     public void iniciarSesion(){
-        MainApp main = new MainApp();
-        try {
-            main.cambiarEscena(3);
-        } catch (IOException ex) {
+        Mensaje mensaje = HttpUtils.iniciarSesion(tfNombre.getText(), 
+                Cifrado.cifrarCadena(tfContra.getText()));
+        if (mensaje.getMensaje().equals("5")){
+            MainApp main = new MainApp();
+            try {
+                main.cambiarEscena(3);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        } else {
+            Dialogo dialogo = new Dialogo(mensaje.getMensaje(), ButtonType.OK);
+            dialogo.show();
         }
     }
     
@@ -65,6 +85,14 @@ public class LoginController implements Initializable {
         try {
             main.cambiarEscena(2);
         } catch (IOException ex) {
+        }
+    }
+    
+    private void activarInicio() {
+        if (tfNombre.getText().isEmpty() || tfContra.getText().isEmpty()) {
+            btnIniciarSesion.setDisable(true);
+        } else {
+            btnIniciarSesion.setDisable(false);
         }
     }
     
