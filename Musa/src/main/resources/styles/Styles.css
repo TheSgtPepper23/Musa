@@ -1,5 +1,5 @@
 AnchorPane, .Dialogos, .Dialogos:header .header-panel, .Dialogos > .button-bar > .container, JFXListView{
-    -fx-background-color: #454545;
+    -fx-background-color: #252525;
 }
 
 VBox, HBox, BordePane, Pane, JFXTreeTableView{

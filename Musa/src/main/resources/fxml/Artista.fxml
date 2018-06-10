@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" styleClass="mainFxmlClass" stylesheets="@../styles/Styles.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.141" fx:controller="games.rockola.musa.controlador.ArtistaController">
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" styleClass="mainFxmlClass" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="games.rockola.musa.controlador.ArtistaController">
    <children>
       <VBox layoutX="213.0" layoutY="119.0" prefHeight="540.0" prefWidth="800.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -44,12 +44,12 @@
             <JFXListView orientation="HORIZONTAL" prefHeight="146.0" prefWidth="800.0" />
             <HBox alignment="CENTER_RIGHT" spacing="40.0" VBox.vgrow="NEVER">
                <children>
-                  <JFXButton>
+                  <JFXButton text="Cancelar">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton>
+                  <JFXButton text="Guardar">
                      <font>
                         <Font size="14.0" />
                      </font>

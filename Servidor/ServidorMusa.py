@@ -2,8 +2,9 @@
 
 from flask import *
 from peewee import *
-import json
 import sys
+from playhouse.shortcuts import model_to_dict, dict_to_model
+from base64 import b64encode
 
 app = Flask(__name__)
 
@@ -16,6 +17,8 @@ class MySQLModel(Model):
         database = musa_db
 # Mensajes
 # 5 - Todo PERFECTO
+# 51 - Melomano login
+# 52 - Artista login
 # 7 - Todo mal
 # 1 - Contraseña incorrecta
 # 2 - El usuario no existe
@@ -30,7 +33,7 @@ class Melomano(MySQLModel):
     nombre = CharField()
     apellidos = CharField()
     password = CharField()
-    fotoPerfil = BigBitField()
+    fotoPerfil = BlobField()
     correoElectronico = CharField()
 
 class Genero(MySQLModel):
@@ -43,6 +46,7 @@ class Artista(MySQLModel):
     biografia = CharField()
     genero = CharField()
     correoElectronico = CharField()
+    password = CharField()
 
 class Album(MySQLModel):
     idAlbum = PrimaryKeyField()
@@ -83,7 +87,7 @@ class CancionPropia(MySQLModel):
 
 class FotoArtista(MySQLModel):
     idFoto = PrimaryKeyField()
-    foto = BlobField()
+    foto = TextField()
     idArtista = ForeignKeyField(Artista, db_column = "idArtista")
 
 class Historial(MySQLModel):
@@ -112,15 +116,22 @@ def registrar_melomano():
 
 @app.route("/melomano/login", methods=["POST"])
 def iniciar_sesion():
-    try:
-        melomano = Melomano.get((Melomano.nombreMelomano == request.form['nombreMelomano']) & (Melomano.password == request.form['password']))
-        mensaje = 5
-    except Melomano.DoesNotExist:
-        mensaje = 2
+    mensaje = 2
+    for melomano in Melomano.select():
+        if (melomano.nombreMelomano == request.form['nombreUsuario']) & (melomano.password == request.form['password']):
+            mensaje = 51
+    
+    for artista in Artista.select():
+        if (artista.nombre == request.form['nombreUsuario']) & (artista.password == request.form['password']):
+            mensaje = 52
     
     return jsonify(mensaje)
 
-
+@app.route("/melomano/recuperar", methods=["POST"])
+def recuperarMelomano():
+    melomano = Melomano.get(Melomano.nombreMelomano == request.form['nombreMelomano'])
+    melomano.fotoPerfil = b64encode(melomano.fotoPerfil).decode("UTF-8")
+    return jsonify(model_to_dict(melomano))
 
 if __name__ == "__main__":
     app.run(host = '127.0.0.1', port = '5555', debug = True)

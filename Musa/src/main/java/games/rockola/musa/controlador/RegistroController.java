@@ -4,13 +4,12 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import games.rockola.musa.Dialogo;
+import games.rockola.musa.Imagenes;
 import games.rockola.musa.MainApp;
 import games.rockola.musa.ws.Cifrado;
 import games.rockola.musa.ws.HttpUtils;
 import games.rockola.musa.ws.pojos.Melomano;
 import games.rockola.musa.ws.pojos.Mensaje;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -20,7 +19,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Hyperlink;
 import javafx.stage.FileChooser;
-import javax.imageio.ImageIO;
 
 public class RegistroController implements Initializable {
     
@@ -65,8 +63,7 @@ public class RegistroController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         seleccionarFoto.setInitialDirectory(new File(System.getProperty("user.home")));
-        FileChooser.ExtensionFilter extensiones = new FileChooser.ExtensionFilter(
-                "Imágenes", "*.jpg", "*.png", "*.jpeg");
+        FileChooser.ExtensionFilter extensiones = new FileChooser.ExtensionFilter("PNG", "*.png");
         seleccionarFoto.getExtensionFilters().add(extensiones);
         btnGuardar.setDisable(true);
         
@@ -112,10 +109,7 @@ public class RegistroController implements Initializable {
     public void seleccionarFoto(){
         try {
             imagen = seleccionarFoto.showOpenDialog(MainApp.getVentana());
-            BufferedImage imagenBuff = ImageIO.read(imagen);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(imagenBuff, "png" , baos);
-            bytesImagen = baos.toByteArray();
+            bytesImagen = Imagenes.codificarImagen(imagen);
             tfRuta.setText(imagen.getAbsolutePath());
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -154,7 +148,12 @@ public class RegistroController implements Initializable {
             nuevo.setNombre(tfNombre.getText());
             nuevo.setApellidos(tfApellidos.getText());
             nuevo.setPassword(Cifrado.cifrarCadena(tfContra.getText()));
-            nuevo.setFotoPerfil(bytesImagen);
+            try {
+                nuevo.setFotoPerfil(Imagenes.bytes2string(bytesImagen));
+                System.out.println(Imagenes.bytes2string(bytesImagen));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
             Mensaje mensaje = HttpUtils.agregarUsuario(nuevo);
             limpiar();
 

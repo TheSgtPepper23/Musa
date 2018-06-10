@@ -23,7 +23,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="games.rockola.musa.controlador.PrincipalController">
    <children>
       <BorderPane stylesheets="@../styles/Styles.css">
@@ -99,7 +98,7 @@
                         </VBox>
                         <VBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <ImageView fx:id="imagenUsuario" fitHeight="90.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="imagenUsuario" fitHeight="90.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="NEVER">
                                  <image>
                                     <Image url="@../images/albumPlaceholder.jpg" />
                                  </image>

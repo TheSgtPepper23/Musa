@@ -1,5 +1,6 @@
 package games.rockola.musa.controlador;
 
+import com.google.gson.Gson;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
@@ -7,6 +8,7 @@ import games.rockola.musa.Dialogo;
 import games.rockola.musa.MainApp;
 import games.rockola.musa.ws.Cifrado;
 import games.rockola.musa.ws.HttpUtils;
+import games.rockola.musa.ws.pojos.Melomano;
 import games.rockola.musa.ws.pojos.Mensaje;
 import java.io.IOException;
 import java.net.URL;
@@ -21,7 +23,6 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.HBox;
 import javafx.stage.StageStyle;
 
@@ -39,14 +40,8 @@ public class LoginController implements Initializable {
 
     @FXML
     private JFXButton btnIniciarSesion;
-
-    @FXML
-    private Hyperlink linkRegistro;
-
-    @FXML
-    private Hyperlink linkRecuperacion;
     
-
+    static Melomano melomanoIniciado ;
     /**
      * Initializes the controller class.
      */
@@ -64,18 +59,28 @@ public class LoginController implements Initializable {
     
     @FXML
     public void iniciarSesion(){
+        MainApp main = new MainApp();
         Mensaje mensaje = HttpUtils.iniciarSesion(tfNombre.getText(), 
                 Cifrado.cifrarCadena(tfContra.getText()));
-        if (mensaje.getMensaje().equals("5")){
-            MainApp main = new MainApp();
-            try {
-                main.cambiarEscena(3);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        } else {
-            Dialogo dialogo = new Dialogo(mensaje.getMensaje(), ButtonType.OK);
-            dialogo.show();
+        switch (mensaje.getMensaje()) {
+            case "51":
+                try {
+                    Mensaje mensajeMelomano = HttpUtils.recuperarMelomano(tfNombre.getText());
+                    melomanoIniciado = new Gson().fromJson(mensajeMelomano.getMensaje(), Melomano.class);
+                    main.cambiarEscena(3);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }   break;
+            case "52":
+                try {
+                    main.cambiarEscena(4);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }   break;
+            default:
+                Dialogo dialogo = new Dialogo(mensaje.getMensaje(), ButtonType.OK);
+                dialogo.show();
+                break;
         }
     }
     
@@ -85,6 +90,7 @@ public class LoginController implements Initializable {
         try {
             main.cambiarEscena(2);
         } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
     

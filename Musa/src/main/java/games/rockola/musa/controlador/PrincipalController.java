@@ -5,9 +5,14 @@ import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXSlider;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeTableView;
+import games.rockola.musa.Imagenes;
+import games.rockola.musa.ws.pojos.Melomano;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -87,6 +92,8 @@ public class PrincipalController implements Initializable {
     
     @FXML
     private JFXDrawer drawerPrincipal;
+    
+    static Melomano melomano;
 
     /**
      * Initializes the controller class.
@@ -103,6 +110,15 @@ public class PrincipalController implements Initializable {
            drawerPrincipal.open();
            drawerPrincipal.setDisable(false);
         });
+        
+        try {
+            imagenUsuario.setImage(Imagenes.decodificarImagen(Imagenes.string2bytes(
+                    LoginController.melomanoIniciado.getFotoPerfil())));
+            System.out.println(LoginController.melomanoIniciado.getFotoPerfil());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
     }    
     
     @FXML

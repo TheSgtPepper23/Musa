@@ -6,13 +6,13 @@ public class Melomano {
     private String nombre;
     private String apellidos;
     private String password;
-    private byte [] fotoPerfil;
+    private String fotoPerfil;
     private String correoElectronico;
 
     public Melomano() {
     }
 
-    public Melomano(Integer idMelomano, String nombreMelomano, String nombre, String apellidos, String password, byte[] fotoPerfil, String correoElectronico) {
+    public Melomano(Integer idMelomano, String nombreMelomano, String nombre, String apellidos, String password, String fotoPerfil, String correoElectronico) {
         this.idMelomano = idMelomano;
         this.nombreMelomano = nombreMelomano;
         this.nombre = nombre;
@@ -62,11 +62,11 @@ public class Melomano {
         this.password = password;
     }
 
-    public byte[] getFotoPerfil() {
+    public String getFotoPerfil() {
         return fotoPerfil;
     }
 
-    public void setFotoPerfil(byte[] fotoPerfil) {
+    public void setFotoPerfil(String fotoPerfil) {
         this.fotoPerfil = fotoPerfil;
     }
 

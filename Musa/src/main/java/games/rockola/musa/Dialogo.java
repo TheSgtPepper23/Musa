@@ -37,10 +37,18 @@ public class Dialogo extends Alert{
             this.setTitle("¡Atención!");
         }
         
-        if (estado.equals("2")){
-            this.setContentText("Usuario o contraseña incorrectos");
-        } else if (estado.equals("300")) {
-            this.setContentText("Las contraseñas no coinciden");
+        switch (estado) {
+            case "2":
+                this.setContentText("Usuario o contraseña incorrectos");
+                break;
+            case "300":
+                this.setContentText("Las contraseñas no coinciden");
+                break;
+            case "4":
+                this.setContentText("Usuario registrado correctamente");
+                break;
+            default:
+                break;
         }
         this.setResizable(false); 
         this.initStyle(StageStyle.UNDECORATED);

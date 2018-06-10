@@ -1,5 +1,6 @@
 package games.rockola.musa.ws;
 
+import games.rockola.musa.Imagenes;
 import games.rockola.musa.ws.pojos.Mensaje;
 import games.rockola.musa.ws.pojos.Melomano;
 import java.io.BufferedReader;
@@ -11,22 +12,34 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class HttpUtils {
 
     private static final String URL = "http://127.0.0.1:5555/";
     
     public static Mensaje agregarUsuario(Melomano melomano) {
-        String params = String.format("nombreMelomano=%s&nombre=%s&apellidos=%s&password=%s&"
-                + "fotoPerfil=%s&correoElectronico=%s", melomano.getNombreMelomano(),
-                melomano.getNombre(), melomano.getApellidos(), melomano.getPassword(), 
-                Arrays.toString(melomano.getFotoPerfil()), melomano.getCorreoElectronico());
+        String params = null;
+        try {
+            params = String.format("nombreMelomano=%s&nombre=%s&apellidos=%s&password=%s&"
+                    + "fotoPerfil=%s&correoElectronico=%s", melomano.getNombreMelomano(),
+                    melomano.getNombre(), melomano.getApellidos(), melomano.getPassword(),
+                    Arrays.toString(Imagenes.string2bytes(melomano.getFotoPerfil())), melomano.getCorreoElectronico());
+        } catch (Exception ex) {
+            Logger.getLogger(HttpUtils.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return invocarServicioWeb("melomano/agregar", "POST", params);
     }
     
-    public static Mensaje iniciarSesion(String nombreMelomano, String pass) {
-        String params = String.format("nombreMelomano=%s&password=%s", nombreMelomano, pass);
+    public static Mensaje iniciarSesion(String nombreUsuario, String pass) {
+        String params = String.format("nombreUsuario=%s&password=%s", nombreUsuario, pass);
         return invocarServicioWeb("melomano/login", "POST", params);
+    }
+    
+    public static Mensaje recuperarMelomano(String nombreMelomano) {
+        String params = String.format("nombreMelomano=%s", nombreMelomano);
+        return invocarServicioWeb("melomano/recuperar", "POST", params);
     }
 
     private static Mensaje invocarServicioWeb(String url, String tipoinvocacion, String parametros){
@@ -48,12 +61,11 @@ public class HttpUtils {
                 c.setRequestMethod(tipoinvocacion);
                 c.setDoOutput(true);
                 //----PASAR PARÁMETROS EN EL CUERPO DEL MENSAJE POST, PUT y DELETE----//
-                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
-                        c.getOutputStream(), "UTF-8"));
-                bw.write(parametros);
-                bw.flush();
-                bw.close();
-                //------------------------------------------------------//
+                try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+                        c.getOutputStream(), "UTF-8"))) {
+                    bw.write(parametros);
+                    bw.flush();
+                }
             }
             mensaje = new Mensaje();
             mensaje.setEstado(c.getResponseCode());
@@ -61,13 +73,14 @@ public class HttpUtils {
                 mensaje.setError(true);
             }
             if(c.getInputStream()!=null) {
-                BufferedReader br = new BufferedReader(new InputStreamReader(c.getInputStream()));
-                StringBuilder sb = new StringBuilder();
-                String line;
-                while ((line = br.readLine()) != null) {
-                    sb.append(line);
+                StringBuilder sb;
+                try (BufferedReader br = new BufferedReader(new InputStreamReader(c.getInputStream()))) {
+                    sb = new StringBuilder();
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        sb.append(line);
+                    }
                 }
-                br.close();
                 mensaje.setMensaje(sb.toString());
             }
         } catch (MalformedURLException ex) {

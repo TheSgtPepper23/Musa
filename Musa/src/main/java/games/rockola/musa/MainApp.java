@@ -5,6 +5,7 @@ import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 
@@ -29,6 +30,9 @@ public class MainApp extends Application {
             case 3:
                 ventana.setScene(new Scene(FXMLLoader.load(getClass().getResource("/fxml/Principal.fxml")), 1152, 720));
                 break;
+            case 4:
+                ventana.setScene(new Scene(FXMLLoader.load(getClass().getResource("/fxml/Artista.fxml")), 1152, 720));
+                break;
         }
         
     }
@@ -36,8 +40,10 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         ventana = stage;
-        stage.setTitle("JavaFX and Maven");
+        stage.setTitle("Musa");
         stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/fxml/Login.fxml")), 1152, 720));
+        Image icono = new Image("/images/icons/Musa2-32.png");
+        stage.getIcons().add(icono);
         stage.show();
     }
 
