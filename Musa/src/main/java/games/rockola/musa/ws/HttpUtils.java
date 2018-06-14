@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 
 public class HttpUtils {
 
-    private static final String URL = "http://192.168.100.8:5555/";
+    private static final String URL = "http://127.0.0.1:5555/";
     
     public static Mensaje agregarUsuario(Melomano melomano) {
         String params = null;
@@ -33,8 +33,8 @@ public class HttpUtils {
         return invocarServicioWeb("melomano/agregar", "POST", params);
     }
     
-    public static Mensaje iniciarSesion(String nombreUsuario, String pass) {
-        String params = String.format("username=%s&password=%s", nombreUsuario, pass);
+    public static Mensaje iniciarSesion(String username, String pass) {
+        String params = String.format("username=%s&password=%s", username, pass);
         return invocarServicioWeb("login", "POST", params);
     }
     
@@ -47,26 +47,31 @@ public class HttpUtils {
         String params = String.format("nombre=%s&idAlbum=%s&idGenero=%s&cancion=%s&duracion=%s", 
                 cancion.getNombre(), cancion.getIdAlbum(), cancion.getIdGenero(), 
                 cancion.getCancion(), cancion.getCancion());
-        return invocarServicioWeb("/cancion/agregar", "POSt", params);
+        return invocarServicioWeb("cancion/agregar", "POSt", params);
     }
     
     public static Mensaje agregarAlbum(Album album){
         String params = String.format("nombre=%s&portada=%s&fechaLanzamiento=%s&"
                 + "companiaDiscografica=%s&idArtista=%s,", album.getNombre(), album.getPortada(),
                 album.getFechaLanzamiento(), album.getCompaniaDiscografica(), album.getIdArtista());
-        return invocarServicioWeb("/album/agregar", "POST", params);       
+        return invocarServicioWeb("album/agregar", "POST", params);       
     }
     
     public static Mensaje agregarArtista(Artista artista) {
         String params = String.format("nombre=%s&biografia=%s&genero=%s&correoElectronico=%s"
                 + "&password=%s", artista.getNombre(), artista.getBiografia(), artista.getGenero(),
                 artista.getCorreoElectronico(), artista.getPassword());
-        return invocarServicioWeb("/artista/agregar", "POST", params);
+        return invocarServicioWeb("artista/agregar", "POST", params);
     }
     
     public static Mensaje recuperarArtista(String nombre){
         String params = String.format("nombre=%s",  nombre);
-        return invocarServicioWeb("/artista/recuperarArtista", "POST", params);
+        return invocarServicioWeb("artista/recuperarArtista", "POST", params);
+    }
+    
+    public static Mensaje actualizarArtista(Integer idArtista, String biografia) {
+        String params = String.format("idArtista=%s&biografia=%s", idArtista, biografia);
+        return invocarServicioWeb("artista/actualizar", "POST", params);
     }
     
     private static Mensaje invocarServicioWeb(String url, String tipoinvocacion, String parametros){
@@ -87,7 +92,7 @@ public class HttpUtils {
                 c = (HttpURLConnection) u.openConnection();
                 c.setRequestMethod(tipoinvocacion);
                 c.setDoOutput(true);
-                //----PASAR PARÁMETROS EN EL CUERPO DEL MENSAJE POST, PUT y DELETE----//
+                
                 try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
                         c.getOutputStream(), "UTF-8"))) {
                     bw.write(parametros);

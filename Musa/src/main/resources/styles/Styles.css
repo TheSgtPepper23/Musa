@@ -1,8 +1,3 @@
-@font-face {
-    font-family: Raleway;
-    src: url("/fuentes/Raleway/Raleway-Light.ttf");
-}
-
 AnchorPane, .Dialogos, .Dialogos:header .header-panel, .Dialogos > .button-bar > .container, JFXListView{
     -fx-background-color: #252525;
 }
@@ -15,21 +10,16 @@ JFXButton {
     -fx-text-fill: white;
     -fx-background-color: #0085d7;
     -jfx-button-type: FLAT;
-    -fx-font-family: "Raleway";
-    -fx-font-size: 13pt ;
 }
 
 .Dialogos *.button{
     -fx-text-fill: white;
     -fx-background-color: #0085d7;
     -jfx-button-type: FLAT;
-    -fx-font-family: "Raleway";
 }
 
 Label {
     -fx-text-fill: white;
-    -fx-font-family: "Raleway";
-    -fx-font-size: 12pt ;
 }
 
 JFXTextField, JFXPasswordField, JFXTextArea {
@@ -37,14 +27,10 @@ JFXTextField, JFXPasswordField, JFXTextArea {
     -jfx-focus-color: #0085d7;
     -jfx-unfocus-color: white;
     -fx-text-fill: white;
-    -fx-font-family: "Raleway";
-    -fx-font-size: 12pt ;
 }
 
 Hyperlink {
     -fx-text-fill: white;
-    -fx-font-family: "Raleway";
-    -fx-font-size: 9pt ;
 }
 
 .jfx-slider > .track {
@@ -94,6 +80,22 @@ JFXRadioButton {
     -jfx-selected-color: #0085d7;
     -jfx-unselected-color: white;
     -fx-text-fill: white;
-    -fx-font-family: "Raleway";
-    -fx-font-size: 9pt ;
+}
+
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color:  #252525;
+    -fx-text-fill: white;
+}
+
+.list-cell:even { 
+    -fx-background-color:  #252525;
+}
+
+.list-cell:odd { 
+    -fx-background-color:  #252525;
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: #252525;
+    -fx-text-fill: white;
 }

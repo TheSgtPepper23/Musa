@@ -31,7 +31,7 @@ public class MainApp extends Application {
                 ventana.setScene(new Scene(FXMLLoader.load(getClass().getResource("/fxml/Principal.fxml")), 1152, 720));
                 break;
             case 4:
-                ventana.setScene(new Scene(FXMLLoader.load(getClass().getResource("/fxml/Artista.fxml")), 1152, 720));
+                ventana.setScene(new Scene(FXMLLoader.load(getClass().getResource("/fxml/Artista.fxml")), 800, 600));
                 break;
         }
         

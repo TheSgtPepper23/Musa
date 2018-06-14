@@ -77,7 +77,7 @@ public class LoginController implements Initializable {
             case "52":
                 try {
                     Mensaje mensajeArtista = HttpUtils.recuperarArtista(tfNombre.getText());
-                    System.out.println(mensajeArtista.getMensaje());
+                    artistaLogueado = new Gson().fromJson(mensajeArtista.getMensaje(), Artista.class);
                     main.cambiarEscena(4);
                 } catch (IOException ex) {
                     ex.printStackTrace();

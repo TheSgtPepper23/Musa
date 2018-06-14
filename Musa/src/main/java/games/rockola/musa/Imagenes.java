@@ -31,4 +31,9 @@ public class Imagenes {
         
         return SwingFXUtils.toFXImage(image, null);
     }
+    
+    public static Image archivoAImagen (File archivoImagen) throws Exception {
+        BufferedImage bimage = ImageIO.read(archivoImagen);
+        return SwingFXUtils.toFXImage(bimage, null);
+    }
 }

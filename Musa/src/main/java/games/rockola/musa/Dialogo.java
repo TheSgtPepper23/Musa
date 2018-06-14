@@ -26,7 +26,7 @@ public class Dialogo extends Alert{
            getClass().getResource("/styles/Styles.css").toExternalForm());
         dialog.getStyleClass().add("Dialogos");
         
-        if (estado.equals("5") || estado.equals("4")) {
+        if (estado.equals("5") || estado.equals("4") || estado.equals("16")) {
             this.setAlertType(AlertType.INFORMATION);
             this.setHeaderText("¡Éxito!");
             this.setTitle("¡Éxito!"); 
@@ -47,7 +47,14 @@ public class Dialogo extends Alert{
             case "4":
                 this.setContentText("Usuario registrado correctamente");
                 break;
+            case "16":
+                this.setContentText("Datos actualizados correctamente");
+                break;
+            case "17":
+                this.setContentText("Error al actualizar los datos");
+                break;
             default:
+                this.setContentText("El mensaje " + estado + " no está registrado");
                 break;
         }
         this.setResizable(false); 

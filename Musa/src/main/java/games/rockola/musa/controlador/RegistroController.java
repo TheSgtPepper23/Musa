@@ -62,7 +62,7 @@ public class RegistroController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         seleccionarFoto.setInitialDirectory(new File(System.getProperty("user.home")));
-        FileChooser.ExtensionFilter extensiones = new FileChooser.ExtensionFilter("JPG", "*.jpg");
+        FileChooser.ExtensionFilter extensiones = new FileChooser.ExtensionFilter("Imágenes", "*.jpg");
         seleccionarFoto.getExtensionFilters().add(extensiones);
         btnGuardar.setDisable(true);
         

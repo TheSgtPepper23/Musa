@@ -157,7 +157,7 @@ def agregar_artista():
             mensaje = 13
     return jsonify(mensaje)
 
-@app.route("/artista/actualizar", methods=["PUT"])
+@app.route("/artista/actualizar", methods=["POST"])
 def actualizar_artista():
     try:
         artista = Artista.select().where(Artista.idArtista == request.form["idArtista"]).get()
@@ -177,7 +177,7 @@ def recuperar_artista():
 def subir_foto_artista():
     with musa_db.atomic():
         try:
-            foto = FotoArtista.create(
+            foto = FotoArtista.create( 
                 foto = request.form['foto'],
                 idArtista = request.form['idArtista']
             )
@@ -277,4 +277,4 @@ def recuperar_playlist():
     return jsonify(playlists)
 
 if __name__ == "__main__":
-    app.run(host = '192.168.1.79', port = '5555', debug = True)
+    app.run(host = '127.0.0.1', port = '5555', debug = True)
