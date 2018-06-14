@@ -32,6 +32,8 @@ class MySQLModel(Model):
 # 15 - No se pudo agregar la canción
 # 16 - Se actualizó el artista
 # 17 - Error al actualizar el artista
+# 18 - Se subió la foto
+# 19 - Error al subir la foto
 # 300 - Contraseñas no coinciden
 
 class Melomano(MySQLModel):
@@ -58,7 +60,7 @@ class Artista(MySQLModel):
 class Album(MySQLModel):
     idAlbum = PrimaryKeyField()
     nombre = CharField()
-    portada = BlobField()
+    portada = TextField()
     fechaLanzamiento = DateField()
     companiaDiscografica = CharField()
     idArtista = ForeignKeyField(Artista, db_column = "idArtista")
@@ -74,8 +76,8 @@ class Cancion(MySQLModel):
 class Playlist(MySQLModel):
     idPlaylist = PrimaryKeyField()
     nombre = CharField()
-    portada = BlobField()
-    nombreUsuario = ForeignKeyField(Melomano, db_column = "idMelomano")
+    portada = TextField()
+    idMelomano = ForeignKeyField(Melomano, db_column = "idMelomano")
 
 class CancionesPlaylist(MySQLModel):
     idPlaylist = ForeignKeyField(Playlist, db_column = "idPlaylist")
@@ -121,15 +123,15 @@ def registrar_melomano():
             mensaje = 6
     return jsonify(mensaje)
 
-@app.route("/melomano/login", methods=["POST"])
+@app.route("/login", methods=["POST"])
 def iniciar_sesion():
     mensaje = 2
     for melomano in Melomano.select():
-        if (melomano.nombreMelomano == request.form['nombreUsuario']) & (melomano.password == request.form['password']):
+        if (melomano.nombreMelomano == request.form['username']) & (melomano.password == request.form['password']):
             mensaje = 51
     
     for artista in Artista.select():
-        if (artista.nombre == request.form['nombreUsuario']) & (artista.password == request.form['password']):
+        if (artista.correoElectronico == request.form['username']) & (artista.password == request.form['password']):
             mensaje = 52
     
     return jsonify(mensaje)
@@ -168,8 +170,36 @@ def actualizar_artista():
 
 @app.route("/artista/recuperarArtista", methods=["POST"])
 def recuperar_artista():
-    artista = Artista.get(Artista.nombre == request.form["nombre"])
+    artista = Artista.get(Artista.correoElectronico == request.form["nombre"])
     return jsonify(model_to_dict(artista))
+
+@app.route("/artista/subirFoto", methods=["POST"])
+def subir_foto_artista():
+    with musa_db.atomic():
+        try:
+            foto = FotoArtista.create(
+                foto = request.form['foto'],
+                idArtista = request.form['idArtista']
+            )
+            mensaje = 18
+        except IntegrityError:
+            mensaje = 19
+        return jsonify(mensaje)
+
+"""
+@app.route("/artista/recuperarFotos", methods=["POST"])
+def recuperar_fotos_artista():
+    foto_query = FotoArtista.select().where(FotoArtista.idArtista == request["idArtista"])
+
+    fotos = 
+    aux = 1
+    for picture in foto_query:
+        dic_foto = {aux: {"idFoto": picture.idFoto, "foto": picture.foto}}
+        aux += 1
+        fotos.update(dic_foto)
+
+    return jsonify(fotos)
+"""
 
 
 @app.route("/album/agregar", methods=["POST"])
@@ -200,14 +230,51 @@ def agregar_cancion():
                 duracion = request.form['duracion'],
             )
             mensaje = 14
-        except:
+        except IntegrityError:
             mensaje = 15
     return jsonify(mensaje)
 
-"""
-@app.route("/canciones/recuperarCancionesPorArtista", methods=["POST"])
+
+@app.route("/canciones/cancionesArtista", methods=["POST"])
 def recuperar_canciones_artista():
-"""
+    query = Cancion.select().join(Album).join(Artista).where(Artista.nombre == request.form["nombreArtista"])
+
+    songs = {}
+    for cancion in query:
+        song = {cancion.idCancion: {"idCancion": cancion.idCancion, "nombre": cancion.nombre, "artista": cancion.idAlbum.idArtista.nombre,
+                "album":cancion.idAlbum.nombre, "duracion": cancion.duracion}}
+        songs.update(song)
+    
+    return jsonify(songs)
+
+@app.route("/canciones/buscar", methods=["POST"])
+def buscar_canciones():
+    query = Cancion.select().join(Album).join(Artista).where(Artista.nombre.contains(request.form["nombre"]) | 
+    (Cancion.nombre.contains(request.form["nombre"]) | 
+    (Album.nombre.contains(request.form["nombre"]))))
+
+    songs = {}
+    aux = 1
+    for cancion in query:
+        song = {aux: {"idCancion": cancion.idCancion, "nombre": cancion.nombre, "artista": cancion.idAlbum.idArtista.nombre,
+                "album":cancion.idAlbum.nombre, "duracion": cancion.duracion}}
+        songs.update(song)
+        aux += 1
+    
+    return jsonify(songs)
+
+@app.route("/playlist/recuperarMelomano", methods=["POST"])
+def recuperar_playlist():
+    listas = Playlist.select().where(Playlist.idMelomano == request.form["idMelomano"])
+
+    playlists = {}
+    aux = 1
+    for lista in listas:
+        oneLista = {aux: {"idPlaylist": lista.idPlaylist, "nombre": lista.nombre}}
+        aux += 1
+        playlists.update(oneLista)
+
+    return jsonify(playlists)
 
 if __name__ == "__main__":
-    app.run(host = '127.0.0.1', port = '5555', debug = True)
+    app.run(host = '192.168.1.79', port = '5555', debug = True)
