@@ -3,6 +3,7 @@ package games.rockola.musa.controlador;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
+import games.rockola.musa.Imagenes;
 import games.rockola.musa.MainApp;
 import java.io.IOException;
 import java.net.URL;
@@ -53,6 +54,11 @@ public class PanelConfigController implements Initializable {
         radioExtrema.setToggleGroup(calidad);
         radioAuto.setSelected(true);
         //radioAuto.getCssMetaData().stream().map(CssMetaData::getProperty).forEach(System.out::println);
+        try {
+            imgUsuario.setImage(Imagenes.decodificarImagen(LoginController.melomanoLogueado.getFotoPerfil()));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }    
     
     @FXML

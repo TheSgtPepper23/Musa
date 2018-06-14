@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 from flask import *
 from peewee import *
@@ -25,6 +24,14 @@ class MySQLModel(Model):
 # 3 - Lista vacia
 # 4 - Usuario registrado
 # 6 - El usuario ya existe
+# 10 - Álbum registrado
+# 11 - Error al registrar álbum
+# 12 - El artista de agregó
+# 13 - Error al agregar al artista
+# 14 - Se agregó la canción
+# 15 - No se pudo agregar la canción
+# 16 - Se actualizó el artista
+# 17 - Error al actualizar el artista
 # 300 - Contraseñas no coinciden
 
 class Melomano(MySQLModel):
@@ -33,7 +40,7 @@ class Melomano(MySQLModel):
     nombre = CharField()
     apellidos = CharField()
     password = CharField()
-    fotoPerfil = BlobField()
+    fotoPerfil = TextField()
     correoElectronico = CharField()
 
 class Genero(MySQLModel):
@@ -110,7 +117,7 @@ def registrar_melomano():
                 fotoPerfil = request.form['fotoPerfil'],
                 correoElectronico = request.form['correoElectronico'])
             mensaje = 4
-        except IntegrityError :
+        except IntegrityError:
             mensaje = 6
     return jsonify(mensaje)
 
@@ -130,8 +137,77 @@ def iniciar_sesion():
 @app.route("/melomano/recuperar", methods=["POST"])
 def recuperarMelomano():
     melomano = Melomano.get(Melomano.nombreMelomano == request.form['nombreMelomano'])
-    melomano.fotoPerfil = b64encode(melomano.fotoPerfil).decode("UTF-8")
     return jsonify(model_to_dict(melomano))
+
+@app.route("/artista/agregar", methods=["POST"])
+def agregar_artista():
+    with musa_db.atomic():
+        try:
+            artista = Artista.create(
+                nombre = request.form['nombre'],
+                biografia = request.form['biografia'],
+                genero = request.form['genero'],
+                correoElectronico = request.form['correoElectronico'],
+                password = request.form['password']
+            )
+            mensaje = 12
+        except IntegrityError:
+            mensaje = 13
+    return jsonify(mensaje)
+
+@app.route("/artista/actualizar", methods=["PUT"])
+def actualizar_artista():
+    try:
+        artista = Artista.select().where(Artista.idArtista == request.form["idArtista"]).get()
+        artista.biografia = request.form["biografia"]
+        artista.save()
+        mensaje = 16
+    except IntegrityError:
+        mensaje = 17
+    return jsonify(mensaje)
+
+@app.route("/artista/recuperarArtista", methods=["POST"])
+def recuperar_artista():
+    artista = Artista.get(Artista.nombre == request.form["nombre"])
+    return jsonify(model_to_dict(artista))
+
+
+@app.route("/album/agregar", methods=["POST"])
+def agregar_album():
+    with musa_db.atomic():
+        try:
+            album = Album.create(
+                nombre = request.form['nombre'],
+                portada = request.form['portada'],
+                fechaLanzamiento = request.form['fechaLanzamiento'],
+                companiaDiscografica = request.form['companiaDiscografica'],
+                idArtista = request.form['idArtista']
+            )
+            mensaje = 10
+        except IntegrityError:
+            mensaje = 11
+    return jsonify(mensaje)
+
+@app.route("/cancion/agregar", methods=["POST"])
+def agregar_cancion():
+    with musa_db.atomic():
+        try:
+            cancion = Cancion.create(
+                nombre = request.form['nombre'],
+                idAlbum = request.form['idAlbum'],
+                idGenero = request.form['idGenero'],
+                cancion = request.form['cancion'],
+                duracion = request.form['duracion'],
+            )
+            mensaje = 14
+        except:
+            mensaje = 15
+    return jsonify(mensaje)
+
+"""
+@app.route("/canciones/recuperarCancionesPorArtista", methods=["POST"])
+def recuperar_canciones_artista():
+"""
 
 if __name__ == "__main__":
     app.run(host = '127.0.0.1', port = '5555', debug = True)

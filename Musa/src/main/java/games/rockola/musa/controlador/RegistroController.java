@@ -54,8 +54,7 @@ public class RegistroController implements Initializable {
     
     final FileChooser seleccionarFoto = new FileChooser();
     
-    File imagen;
-    byte [] bytesImagen;
+    File imagen = null;
     
     /**
      * Initializes the controller class.
@@ -63,7 +62,7 @@ public class RegistroController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         seleccionarFoto.setInitialDirectory(new File(System.getProperty("user.home")));
-        FileChooser.ExtensionFilter extensiones = new FileChooser.ExtensionFilter("PNG", "*.png");
+        FileChooser.ExtensionFilter extensiones = new FileChooser.ExtensionFilter("JPG", "*.jpg");
         seleccionarFoto.getExtensionFilters().add(extensiones);
         btnGuardar.setDisable(true);
         
@@ -107,13 +106,9 @@ public class RegistroController implements Initializable {
     
     @FXML
     public void seleccionarFoto(){
-        try {
-            imagen = seleccionarFoto.showOpenDialog(MainApp.getVentana());
-            bytesImagen = Imagenes.codificarImagen(imagen);
+        imagen = seleccionarFoto.showOpenDialog(MainApp.getVentana());
+        if(imagen != null)
             tfRuta.setText(imagen.getAbsolutePath());
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
     }
     
     private void activarBoton(){
@@ -129,7 +124,6 @@ public class RegistroController implements Initializable {
     
     private void limpiar(){
         imagen = null;
-        bytesImagen = null;
         tfNombreUsuario.setText("");
         tfNombre.setText("");
         tfApellidos.setText("");
@@ -140,7 +134,7 @@ public class RegistroController implements Initializable {
     }
     
     @FXML
-    public void guardarUsuario(){
+    public void guardarUsuario() throws IOException{
         if(tfContra.getText().equals(tfConfirmContra.getText())){
             Melomano nuevo = new Melomano();
             nuevo.setNombreMelomano(tfNombreUsuario.getText());
@@ -148,15 +142,9 @@ public class RegistroController implements Initializable {
             nuevo.setNombre(tfNombre.getText());
             nuevo.setApellidos(tfApellidos.getText());
             nuevo.setPassword(Cifrado.cifrarCadena(tfContra.getText()));
-            try {
-                nuevo.setFotoPerfil(Imagenes.bytes2string(bytesImagen));
-                System.out.println(Imagenes.bytes2string(bytesImagen));
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+            nuevo.setFotoPerfil(Imagenes.codificarImagen(imagen));
             Mensaje mensaje = HttpUtils.agregarUsuario(nuevo);
             limpiar();
-
             Dialogo dialogo = new Dialogo(mensaje.getMensaje(), ButtonType.OK);
             dialogo.show();
         } else {

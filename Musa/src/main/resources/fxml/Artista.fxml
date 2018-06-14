@@ -11,11 +11,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" styleClass="mainFxmlClass" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="games.rockola.musa.controlador.ArtistaController">
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" styleClass="mainFxmlClass" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="games.rockola.musa.controlador.ArtistaController">
    <children>
       <VBox layoutX="213.0" layoutY="119.0" prefHeight="540.0" prefWidth="800.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label text="Label">
+            <Label fx:id="labelArtista" text="Label">
                <font>
                   <Font size="36.0" />
                </font>
@@ -25,7 +25,7 @@
                   <Insets bottom="10.0" />
                </padding>
             </Separator>
-            <JFXTextArea labelFloat="true" prefHeight="100.0" prefWidth="800.0" promptText="Biografía">
+            <JFXTextArea fx:id="areaBio" labelFloat="true" prefHeight="100.0" prefWidth="800.0" promptText="Biografía">
                <font>
                   <Font size="14.0" />
                </font>
@@ -35,21 +35,21 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <JFXListView orientation="HORIZONTAL" prefHeight="119.0" prefWidth="800.0" />
+            <JFXListView fx:id="listaImagenes" orientation="HORIZONTAL" prefHeight="119.0" prefWidth="800.0" />
             <Label text="Albumes">
                <font>
                   <Font size="14.0" />
                </font>
             </Label>
-            <JFXListView orientation="HORIZONTAL" prefHeight="146.0" prefWidth="800.0" />
+            <JFXListView fx:id="listaAlbumes" orientation="HORIZONTAL" prefHeight="146.0" prefWidth="800.0" />
             <HBox alignment="CENTER_RIGHT" spacing="40.0" VBox.vgrow="NEVER">
                <children>
-                  <JFXButton text="Cancelar">
+                  <JFXButton fx:id="btnCancelar" text="Cancelar">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton text="Guardar">
+                  <JFXButton fx:id="btnGuardar" text="Guardar">
                      <font>
                         <Font size="14.0" />
                      </font>

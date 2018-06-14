@@ -1,3 +1,8 @@
+@font-face {
+    font-family: Raleway;
+    src: url("/fuentes/Raleway/Raleway-Light.ttf");
+}
+
 AnchorPane, .Dialogos, .Dialogos:header .header-panel, .Dialogos > .button-bar > .container, JFXListView{
     -fx-background-color: #252525;
 }
@@ -10,16 +15,21 @@ JFXButton {
     -fx-text-fill: white;
     -fx-background-color: #0085d7;
     -jfx-button-type: FLAT;
+    -fx-font-family: "Raleway";
+    -fx-font-size: 13pt ;
 }
 
 .Dialogos *.button{
     -fx-text-fill: white;
     -fx-background-color: #0085d7;
     -jfx-button-type: FLAT;
+    -fx-font-family: "Raleway";
 }
 
 Label {
     -fx-text-fill: white;
+    -fx-font-family: "Raleway";
+    -fx-font-size: 12pt ;
 }
 
 JFXTextField, JFXPasswordField, JFXTextArea {
@@ -27,10 +37,14 @@ JFXTextField, JFXPasswordField, JFXTextArea {
     -jfx-focus-color: #0085d7;
     -jfx-unfocus-color: white;
     -fx-text-fill: white;
+    -fx-font-family: "Raleway";
+    -fx-font-size: 12pt ;
 }
 
 Hyperlink {
     -fx-text-fill: white;
+    -fx-font-family: "Raleway";
+    -fx-font-size: 9pt ;
 }
 
 .jfx-slider > .track {
@@ -64,6 +78,7 @@ SplitPane {
 
 .tree-table-view .column-header{
     -fx-border-width: 0;
+    -fx-font-family: "Raleway";
 }
 
 .jfx-progress-bar > .track, .jfx-progress-bar > .bar {
@@ -79,4 +94,6 @@ JFXRadioButton {
     -jfx-selected-color: #0085d7;
     -jfx-unselected-color: white;
     -fx-text-fill: white;
+    -fx-font-family: "Raleway";
+    -fx-font-size: 9pt ;
 }

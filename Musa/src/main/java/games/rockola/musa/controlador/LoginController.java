@@ -8,6 +8,7 @@ import games.rockola.musa.Dialogo;
 import games.rockola.musa.MainApp;
 import games.rockola.musa.ws.Cifrado;
 import games.rockola.musa.ws.HttpUtils;
+import games.rockola.musa.ws.pojos.Artista;
 import games.rockola.musa.ws.pojos.Melomano;
 import games.rockola.musa.ws.pojos.Mensaje;
 import java.io.IOException;
@@ -41,7 +42,9 @@ public class LoginController implements Initializable {
     @FXML
     private JFXButton btnIniciarSesion;
     
-    static Melomano melomanoIniciado ;
+    public static Melomano melomanoLogueado;
+    public static Artista artistaLogueado;
+    
     /**
      * Initializes the controller class.
      */
@@ -66,13 +69,15 @@ public class LoginController implements Initializable {
             case "51":
                 try {
                     Mensaje mensajeMelomano = HttpUtils.recuperarMelomano(tfNombre.getText());
-                    melomanoIniciado = new Gson().fromJson(mensajeMelomano.getMensaje(), Melomano.class);
+                    melomanoLogueado = new Gson().fromJson(mensajeMelomano.getMensaje(), Melomano.class);
                     main.cambiarEscena(3);
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }   break;
             case "52":
                 try {
+                    Mensaje mensajeArtista = HttpUtils.recuperarArtista(tfNombre.getText());
+                    System.out.println(mensajeArtista.getMensaje());
                     main.cambiarEscena(4);
                 } catch (IOException ex) {
                     ex.printStackTrace();

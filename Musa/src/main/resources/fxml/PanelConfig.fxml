@@ -44,7 +44,11 @@
                      </font>
                   </Label>
                   <JFXTextField fx:id="tfRuta" labelFloat="true" promptText="Ruta" />
-                  <JFXButton fx:id="btnEliminar" prefHeight="27.0" prefWidth="215.0" text="Eliminar canciones descargadas" />
+                  <HBox alignment="CENTER">
+                     <children>
+                        <JFXButton fx:id="btnEliminar" prefHeight="27.0" prefWidth="307.0" text="Eliminar canciones descargadas" />
+                     </children>
+                  </HBox>
                </children>
                <opaqueInsets>
                   <Insets />

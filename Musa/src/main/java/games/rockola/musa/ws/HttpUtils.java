@@ -1,6 +1,8 @@
 package games.rockola.musa.ws;
 
-import games.rockola.musa.Imagenes;
+import games.rockola.musa.ws.pojos.Album;
+import games.rockola.musa.ws.pojos.Artista;
+import games.rockola.musa.ws.pojos.Cancion;
 import games.rockola.musa.ws.pojos.Mensaje;
 import games.rockola.musa.ws.pojos.Melomano;
 import java.io.BufferedReader;
@@ -11,21 +13,20 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class HttpUtils {
 
-    private static final String URL = "http://127.0.0.1:5555/";
+    private static final String URL = "http://192.168.100.8:5555/";
     
     public static Mensaje agregarUsuario(Melomano melomano) {
         String params = null;
         try {
             params = String.format("nombreMelomano=%s&nombre=%s&apellidos=%s&password=%s&"
                     + "fotoPerfil=%s&correoElectronico=%s", melomano.getNombreMelomano(),
-                    melomano.getNombre(), melomano.getApellidos(), melomano.getPassword(),
-                    Arrays.toString(Imagenes.string2bytes(melomano.getFotoPerfil())), melomano.getCorreoElectronico());
+                    melomano.getNombre(), melomano.getApellidos(), melomano.getPassword(), 
+                    melomano.getFotoPerfil(), melomano.getCorreoElectronico());
         } catch (Exception ex) {
             Logger.getLogger(HttpUtils.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -33,15 +34,41 @@ public class HttpUtils {
     }
     
     public static Mensaje iniciarSesion(String nombreUsuario, String pass) {
-        String params = String.format("nombreUsuario=%s&password=%s", nombreUsuario, pass);
-        return invocarServicioWeb("melomano/login", "POST", params);
+        String params = String.format("username=%s&password=%s", nombreUsuario, pass);
+        return invocarServicioWeb("login", "POST", params);
     }
     
     public static Mensaje recuperarMelomano(String nombreMelomano) {
         String params = String.format("nombreMelomano=%s", nombreMelomano);
         return invocarServicioWeb("melomano/recuperar", "POST", params);
     }
-
+    
+    public static Mensaje agregarCancion(Cancion cancion){
+        String params = String.format("nombre=%s&idAlbum=%s&idGenero=%s&cancion=%s&duracion=%s", 
+                cancion.getNombre(), cancion.getIdAlbum(), cancion.getIdGenero(), 
+                cancion.getCancion(), cancion.getCancion());
+        return invocarServicioWeb("/cancion/agregar", "POSt", params);
+    }
+    
+    public static Mensaje agregarAlbum(Album album){
+        String params = String.format("nombre=%s&portada=%s&fechaLanzamiento=%s&"
+                + "companiaDiscografica=%s&idArtista=%s,", album.getNombre(), album.getPortada(),
+                album.getFechaLanzamiento(), album.getCompaniaDiscografica(), album.getIdArtista());
+        return invocarServicioWeb("/album/agregar", "POST", params);       
+    }
+    
+    public static Mensaje agregarArtista(Artista artista) {
+        String params = String.format("nombre=%s&biografia=%s&genero=%s&correoElectronico=%s"
+                + "&password=%s", artista.getNombre(), artista.getBiografia(), artista.getGenero(),
+                artista.getCorreoElectronico(), artista.getPassword());
+        return invocarServicioWeb("/artista/agregar", "POST", params);
+    }
+    
+    public static Mensaje recuperarArtista(String nombre){
+        String params = String.format("nombre=%s",  nombre);
+        return invocarServicioWeb("/artista/recuperarArtista", "POST", params);
+    }
+    
     private static Mensaje invocarServicioWeb(String url, String tipoinvocacion, String parametros){
         HttpURLConnection c = null;
         URL u = null;
