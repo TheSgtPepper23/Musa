@@ -21,8 +21,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ButtonType;
@@ -142,9 +140,11 @@ public class ArtistaController implements Initializable {
         });
         
         Mensaje mensaje = HttpUtils.actualizarArtista(artista.getIdArtista(), areaBio.getText());
+        Mensaje mensajeEliminar = HttpUtils.eliminarFotosArtista(artista.getIdArtista());
         Mensaje mensajeFotos = HttpUtils.subirFotos(fotos);
         
-        if(mensaje.getMensaje().equals("16") && mensajeFotos.getMensaje().equals("16")){
+        if(mensaje.getMensaje().equals("16") && mensajeFotos.getMensaje().equals("16") && 
+                mensajeEliminar.getEstado().equals("16")){
             new Dialogo(mensaje.getMensaje(), ButtonType.OK).show();
         } else {
             new Dialogo(mensaje.getMensaje(), ButtonType.OK).show();

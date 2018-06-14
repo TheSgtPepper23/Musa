@@ -6,14 +6,12 @@ import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 
 public class MainApp extends Application {
     private static Stage ventana;
-    private static Scene login;
-    private static Scene registro;
-    private static Scene principal;
 
     public static Stage getVentana() {
         return MainApp.ventana;
@@ -22,16 +20,24 @@ public class MainApp extends Application {
     public void cambiarEscena(Integer noEscena) throws IOException{
         switch(noEscena){
             case 1:
-                ventana.setScene(new Scene(FXMLLoader.load(getClass().getResource("/fxml/Login.fxml")), 1152, 720));
+                ventana.setScene(new Scene(FXMLLoader.load(getClass().getResource(
+                        "/fxml/Login.fxml")), 1152, 720));
+                ventana.centerOnScreen();
                 break;
             case 2:
-                ventana.setScene(new Scene(FXMLLoader.load(getClass().getResource("/fxml/Registro.fxml")), 1152, 720));
+                ventana.setScene(new Scene(FXMLLoader.load(getClass().getResource(
+                        "/fxml/Registro.fxml")), 1152, 720));
+                ventana.centerOnScreen();
                 break;
             case 3:
-                ventana.setScene(new Scene(FXMLLoader.load(getClass().getResource("/fxml/Principal.fxml")), 1152, 720));
+                ventana.setScene(new Scene(FXMLLoader.load(getClass().getResource(
+                        "/fxml/Principal.fxml")), 1152, 720));
+                ventana.centerOnScreen();
                 break;
             case 4:
-                ventana.setScene(new Scene(FXMLLoader.load(getClass().getResource("/fxml/Artista.fxml")), 800, 600));
+                ventana.setScene(new Scene(FXMLLoader.load(getClass().getResource(
+                        "/fxml/Artista.fxml")), 800, 600));
+                ventana.centerOnScreen();
                 break;
         }
         
@@ -40,6 +46,7 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         ventana = stage;
+        stage.centerOnScreen();
         stage.setTitle("Musa");
         stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/fxml/Login.fxml")), 1152, 720));
         Image icono = new Image("/images/icons/Musa2-32.png");

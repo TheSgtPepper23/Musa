@@ -184,6 +184,15 @@ def subir_foto_artista():
             mensaje = 17
         return jsonify(mensaje)
 
+@app.route("/artista/borrarFotos", methods=["DELETE"])
+def eliminar_fotos_artista():
+    try:
+        FotoArtista.delete().where(FotoArtista.idArtista == request.form['idArtista']).execute()
+        mensaje = 16
+    except IntegrityError:
+        mensaje = 17
+    return jsonify(mensaje)
+
 """
 @app.route("/artista/recuperarFotos", methods=["POST"])
 def recuperar_fotos_artista():

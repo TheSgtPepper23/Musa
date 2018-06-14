@@ -57,7 +57,7 @@ public class Dialogo extends Alert{
                 this.setContentText("El mensaje " + estado + " no está registrado");
                 break;
         }
-        this.setResizable(false); 
+        this.setResizable(false);
         this.initStyle(StageStyle.UNDECORATED);
     }
 }
