@@ -3,6 +3,7 @@ package games.rockola.musa.ws;
 import games.rockola.musa.ws.pojos.Album;
 import games.rockola.musa.ws.pojos.Artista;
 import games.rockola.musa.ws.pojos.Cancion;
+import games.rockola.musa.ws.pojos.FotoArtista;
 import games.rockola.musa.ws.pojos.Mensaje;
 import games.rockola.musa.ws.pojos.Melomano;
 import java.io.BufferedReader;
@@ -13,6 +14,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -72,6 +74,20 @@ public class HttpUtils {
     public static Mensaje actualizarArtista(Integer idArtista, String biografia) {
         String params = String.format("idArtista=%s&biografia=%s", idArtista, biografia);
         return invocarServicioWeb("artista/actualizar", "POST", params);
+    }
+    
+    public static Mensaje subirFotos(List<FotoArtista> listaFotos){
+        Mensaje mensaje = new Mensaje();
+        mensaje.setMensaje("18");
+        
+        for (FotoArtista foto : listaFotos) {
+            String params = String.format("idArtista=%s&foto=%s", foto.getIdArtista(), foto.getFoto());
+            Mensaje fotoMensaje = invocarServicioWeb("artista/subirFoto", "POST", params);
+            if (fotoMensaje.getMensaje().equals("19")) {
+                mensaje.setMensaje("19");
+            } 
+        }
+        return mensaje;
     }
     
     private static Mensaje invocarServicioWeb(String url, String tipoinvocacion, String parametros){

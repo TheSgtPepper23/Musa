@@ -84,8 +84,8 @@ public class ArtistaController implements Initializable {
             });
             
             cell.itemProperty().addListener((obs, oldItem, newItem) -> {
-                vista.setFitHeight(110);
-                vista.setFitWidth(110);
+                vista.setFitHeight(100);
+                vista.setFitWidth(100);
                 if (newItem != null) {
                     try {
                         vista.setImage(Imagenes.archivoAImagen(newItem));
