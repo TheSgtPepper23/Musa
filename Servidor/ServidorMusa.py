@@ -32,8 +32,6 @@ class MySQLModel(Model):
 # 15 - No se pudo agregar la canción
 # 16 - Se actualizó el artista
 # 17 - Error al actualizar el artista
-# 18 - Se subió la foto
-# 19 - Error al subir la foto
 # 300 - Contraseñas no coinciden
 
 class Melomano(MySQLModel):
@@ -181,9 +179,9 @@ def subir_foto_artista():
                 foto = request.form['foto'],
                 idArtista = request.form['idArtista']
             )
-            mensaje = 18
+            mensaje = 16
         except IntegrityError:
-            mensaje = 19
+            mensaje = 17
         return jsonify(mensaje)
 
 """

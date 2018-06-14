@@ -78,14 +78,16 @@ public class HttpUtils {
     
     public static Mensaje subirFotos(List<FotoArtista> listaFotos){
         Mensaje mensaje = new Mensaje();
-        mensaje.setMensaje("18");
+        mensaje.setMensaje("16");
+        mensaje.setEstado(200);
         
         for (FotoArtista foto : listaFotos) {
             String params = String.format("idArtista=%s&foto=%s", foto.getIdArtista(), foto.getFoto());
             Mensaje fotoMensaje = invocarServicioWeb("artista/subirFoto", "POST", params);
-            if (fotoMensaje.getMensaje().equals("19")) {
-                mensaje.setMensaje("19");
-            } 
+            if (fotoMensaje.getMensaje().equals("17")) {
+                mensaje.setMensaje(fotoMensaje.getMensaje());
+                mensaje.setEstado(fotoMensaje.getEstado());
+            }
         }
         return mensaje;
     }

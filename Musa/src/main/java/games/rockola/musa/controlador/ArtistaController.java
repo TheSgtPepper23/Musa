@@ -13,11 +13,16 @@ import games.rockola.musa.Imagenes;
 import games.rockola.musa.MainApp;
 import games.rockola.musa.ws.HttpUtils;
 import games.rockola.musa.ws.pojos.Artista;
+import games.rockola.musa.ws.pojos.FotoArtista;
 import games.rockola.musa.ws.pojos.Mensaje;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ButtonType;
@@ -72,7 +77,12 @@ public class ArtistaController implements Initializable {
             
             ContextMenu contextMenu = new ContextMenu();
             MenuItem eliminar = new MenuItem("Eliminar");
-            eliminar.setOnAction(event -> listaImagenes.getItems().remove(cell.getItem()));
+            eliminar.setOnAction((event) -> {
+                listaImagenes.getItems().remove(cell.getItem());
+                if(listaImagenes.getItems().size() < 5){
+                    agregarImagen.setDisable(false);
+                }  
+            });
             contextMenu.getItems().addAll(eliminar);
 
             cell.emptyProperty().addListener((obs, wasEmpty, isNowEmpty) -> {
@@ -113,14 +123,28 @@ public class ArtistaController implements Initializable {
         File archivo = seleccionarFoto.showOpenDialog(MainApp.getVentana());
         if(archivo != null) {
             listaImagenes.getItems().add(archivo);
+            if(listaImagenes.getItems().size() > 4) {
+                agregarImagen.setDisable(true);
+            }
         }
     }
     
     @FXML
     public void guardarCambios(){
-        Mensaje mensaje = HttpUtils.actualizarArtista(artista.getIdArtista(), areaBio.getText());
+        List<FotoArtista> fotos = new ArrayList<>();
         
-        if(mensaje.getMensaje().equals("16")){
+        listaImagenes.getItems().forEach((archivo) -> {
+            try {
+                fotos.add(new FotoArtista(Imagenes.codificarImagen(archivo), artista.getIdArtista()));
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
+        
+        Mensaje mensaje = HttpUtils.actualizarArtista(artista.getIdArtista(), areaBio.getText());
+        Mensaje mensajeFotos = HttpUtils.subirFotos(fotos);
+        
+        if(mensaje.getMensaje().equals("16") && mensajeFotos.getMensaje().equals("16")){
             new Dialogo(mensaje.getMensaje(), ButtonType.OK).show();
         } else {
             new Dialogo(mensaje.getMensaje(), ButtonType.OK).show();
