@@ -5,6 +5,9 @@
  */
 package games.rockola.musa.controlador;
 
+import com.google.gson.Gson;
+import java.lang.reflect.Type;
+import com.google.gson.reflect.TypeToken;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
@@ -29,6 +32,7 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 
@@ -46,7 +50,7 @@ public class ArtistaController implements Initializable {
     private JFXTextArea areaBio;
 
     @FXML
-    private JFXListView<File> listaImagenes;
+    private JFXListView<Image> listaImagenes;
 
     @FXML
     private JFXListView<File> listaAlbumes;
@@ -71,7 +75,7 @@ public class ArtistaController implements Initializable {
         
         listaImagenes.setCellFactory(lv -> {
             ImageView vista = new ImageView();
-            ListCell<File> cell = new ListCell<>();
+            ListCell<Image> cell = new ListCell<>();
             
             ContextMenu contextMenu = new ContextMenu();
             MenuItem eliminar = new MenuItem("Eliminar");
@@ -92,11 +96,11 @@ public class ArtistaController implements Initializable {
             });
             
             cell.itemProperty().addListener((obs, oldItem, newItem) -> {
-                vista.setFitHeight(100);
-                vista.setFitWidth(100);
+                vista.setFitHeight(80);
+                vista.setFitWidth(80);
                 if (newItem != null) {
                     try {
-                        vista.setImage(Imagenes.archivoAImagen(newItem));
+                        vista.setImage(newItem);
                     } catch (Exception ex) {}
                 }
             });
@@ -111,7 +115,18 @@ public class ArtistaController implements Initializable {
             cell.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
             return cell ;
         });
-    }    
+        
+        Mensaje mensaje = HttpUtils.recuperarFotosArtista(artista.getIdArtista());
+        Type listaFotos = new TypeToken<ArrayList<FotoArtista>>(){}.getType();
+        List<FotoArtista> fotosRecuperadas = new Gson().fromJson(mensaje.getMensaje(), listaFotos);
+        for (FotoArtista foto : fotosRecuperadas) {
+            try {
+                listaImagenes.getItems().add(Imagenes.decodificarImagen(foto.getFoto()));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }   
         
     @FXML
     public void anadirImagen(){
@@ -120,7 +135,11 @@ public class ArtistaController implements Initializable {
                 "Imágenes", "*.jpg"));
         File archivo = seleccionarFoto.showOpenDialog(MainApp.getVentana());
         if(archivo != null) {
-            listaImagenes.getItems().add(archivo);
+            try {
+                listaImagenes.getItems().add(Imagenes.archivoAImagen(archivo));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
             if(listaImagenes.getItems().size() > 4) {
                 agregarImagen.setDisable(true);
             }
@@ -131,10 +150,10 @@ public class ArtistaController implements Initializable {
     public void guardarCambios(){
         List<FotoArtista> fotos = new ArrayList<>();
         
-        listaImagenes.getItems().forEach((archivo) -> {
+        listaImagenes.getItems().forEach((imagen) -> {
             try {
-                fotos.add(new FotoArtista(Imagenes.codificarImagen(archivo), artista.getIdArtista()));
-            } catch (IOException ex) {
+                fotos.add(new FotoArtista(Imagenes.imagenAString(imagen), artista.getIdArtista()));
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
         });

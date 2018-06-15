@@ -97,6 +97,11 @@ public class HttpUtils {
         return invocarServicioWeb("artista/borrarFotos", "DELETE", params);
     }
     
+    public static Mensaje recuperarFotosArtista(Integer idArtista) {
+        String params = String.format("idArtista=%s", idArtista);
+        return invocarServicioWeb("artista/recuperarFotos", "POST", params);
+    }
+    
     private static Mensaje invocarServicioWeb(String url, String tipoinvocacion, String parametros){
         HttpURLConnection c = null;
         URL u = null;

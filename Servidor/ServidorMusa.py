@@ -1,4 +1,3 @@
-
 from flask import *
 from peewee import *
 import sys
@@ -193,21 +192,15 @@ def eliminar_fotos_artista():
         mensaje = 17
     return jsonify(mensaje)
 
-"""
 @app.route("/artista/recuperarFotos", methods=["POST"])
 def recuperar_fotos_artista():
-    foto_query = FotoArtista.select().where(FotoArtista.idArtista == request["idArtista"])
+    query = FotoArtista.select(FotoArtista.foto).where(FotoArtista.idArtista == request.form['idArtista'])
+    lista_foto = []
 
-    fotos = 
-    aux = 1
-    for picture in foto_query:
-        dic_foto = {aux: {"idFoto": picture.idFoto, "foto": picture.foto}}
-        aux += 1
-        fotos.update(dic_foto)
+    for foto in query:
+        lista_foto.append(model_to_dict(foto))
 
-    return jsonify(fotos)
-"""
-
+    return (jsonify(lista_foto))
 
 @app.route("/album/agregar", methods=["POST"])
 def agregar_album():
