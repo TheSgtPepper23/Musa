@@ -7,7 +7,7 @@ from base64 import b64encode
 app = Flask(__name__)
 
 musa_db = MySQLDatabase(
-    "musa", host="localhost", port=3306, user="euterpe", passwd="An6248322")
+    "musa", host="localhost", port=3306, user="root", passwd="Emilio08")
 
 class MySQLModel(Model):
     """Database model"""
@@ -50,9 +50,9 @@ class Artista(MySQLModel):
     idArtista = PrimaryKeyField()
     nombre = CharField()
     biografia = CharField()
-    genero = CharField()
     correoElectronico = CharField()
     password = CharField()
+    idGenero = ForeignKeyField(Genero, db_column = "idGenero")
 
 class Album(MySQLModel):
     idAlbum = PrimaryKeyField()
@@ -67,7 +67,7 @@ class Cancion(MySQLModel):
     nombre = CharField()
     idAlbum = ForeignKeyField(Album, db_column = "idAlbum")
     idGenero = ForeignKeyField(Genero, db_column = "idGenero")
-    cancion = BlobField()
+    cancion = TextField()
     duracion = IntegerField()
 
 class Playlist(MySQLModel):
@@ -88,7 +88,7 @@ class Calificacion(MySQLModel):
 class CancionPropia(MySQLModel):
     idCancionPropia = PrimaryKeyField()
     nombre = CharField()
-    cancion = BlobField()
+    cancion = TextField()
     nombreUsuario = ForeignKeyField(Melomano, db_column = "idMelomano")
 
 class FotoArtista(MySQLModel):
@@ -235,31 +235,41 @@ def agregar_cancion():
     return jsonify(mensaje)
 
 
-@app.route("/canciones/cancionesArtista", methods=["POST"])
+@app.route("/cancion/cancionesArtista", methods=["POST"])
 def recuperar_canciones_artista():
     query = Cancion.select().join(Album).join(Artista).where(Artista.nombre == request.form["nombreArtista"])
 
-    songs = {}
+    songs = []
     for cancion in query:
-        song = {cancion.idCancion: {"idCancion": cancion.idCancion, "nombre": cancion.nombre, "artista": cancion.idAlbum.idArtista.nombre,
-                "album":cancion.idAlbum.nombre, "duracion": cancion.duracion}}
-        songs.update(song)
+        song = {"idCancion": cancion.idCancion, "nombre": cancion.nombre, "artista": cancion.idAlbum.idArtista.nombre,
+                "album":cancion.idAlbum.nombre, "duracion": cancion.duracion}
+        songs.append(song)
     
     return jsonify(songs)
 
-@app.route("/canciones/buscar", methods=["POST"])
+@app.route("/cancion/buscar", methods=["POST"])
 def buscar_canciones():
     query = Cancion.select().join(Album).join(Artista).where(Artista.nombre.contains(request.form["nombre"]) | 
     (Cancion.nombre.contains(request.form["nombre"]) | 
     (Album.nombre.contains(request.form["nombre"]))))
 
-    songs = {}
-    aux = 1
+    songs = []
     for cancion in query:
-        song = {aux: {"idCancion": cancion.idCancion, "nombre": cancion.nombre, "artista": cancion.idAlbum.idArtista.nombre,
-                "album":cancion.idAlbum.nombre, "duracion": cancion.duracion}}
-        songs.update(song)
-        aux += 1
+        song = {"idCancion": cancion.idCancion, "nombre": cancion.nombre, "artista": cancion.idAlbum.idArtista.nombre,
+                "album":cancion.idAlbum.nombre, "duracion": cancion.duracion}
+        songs.append(song)
+    
+    return jsonify(songs)
+
+@app.route("/cancion/recuperarTodas", methods=["GET"])
+def recuperar_todas_canciones():
+    query = Cancion.select().join(Album).join(Artista)
+
+    songs = []
+    for cancion in query:
+        song = {"idCancion": cancion.idCancion, "nombre": cancion.nombre, "artista": cancion.idAlbum.idArtista.nombre,
+                "album":cancion.idAlbum.nombre, "duracion": cancion.duracion}
+        songs.append(song)
     
     return jsonify(songs)
 
@@ -267,14 +277,22 @@ def buscar_canciones():
 def recuperar_playlist():
     listas = Playlist.select().where(Playlist.idMelomano == request.form["idMelomano"])
 
-    playlists = {}
-    aux = 1
+    playlists = []
     for lista in listas:
-        oneLista = {aux: {"idPlaylist": lista.idPlaylist, "nombre": lista.nombre}}
-        aux += 1
-        playlists.update(oneLista)
+        oneLista = {"idPlaylist": lista.idPlaylist, "nombre": lista.nombre, "portada": lista.portada}
+        playlists.append(oneLista)
 
     return jsonify(playlists)
+
+@app.route("/genero/recuperarGeneros", methods=["GET"])
+def recuperar_generos():
+    generos = []
+    query_generos = Genero.select(Genero.genero)
+
+    for genero in query_generos:
+        generos.append(model_to_dict(genero))
+
+    return jsonify(generos)
 
 if __name__ == "__main__":
     app.run(host = '127.0.0.1', port = '5555', debug = True)

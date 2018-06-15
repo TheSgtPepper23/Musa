@@ -5,15 +5,14 @@
 <?import com.jfoenix.controls.JFXProgressBar?>
 <?import com.jfoenix.controls.JFXSlider?>
 <?import com.jfoenix.controls.JFXTextField?>
-<?import com.jfoenix.controls.JFXTreeTableView?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TreeTableColumn?>
-<?import javafx.scene.control.TreeTableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -23,7 +22,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="games.rockola.musa.controlador.PrincipalController">
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="games.rockola.musa.controlador.PrincipalController">
    <children>
       <BorderPane stylesheets="@../styles/Styles.css">
          <top>
@@ -118,19 +117,19 @@
                      <children>
                         <VBox layoutX="-24.0" prefHeight="570.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <JFXTreeTableView fx:id="tablaListas" prefHeight="471.0" prefWidth="250.0">
-                                 <columns>
-                                    <TreeTableColumn fx:id="colListas" prefWidth="75.0" text="Column X" />
-                                 </columns>
+                              <TableView fx:id="tablaListas" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                                <columns>
+                                  <TableColumn fx:id="columnaListas" prefWidth="75.0" text="Playlists" />
+                                </columns>
                                  <columnResizePolicy>
-                                    <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
-                              </JFXTreeTableView>
+                              </TableView>
                               <Separator prefWidth="200.0" />
                               <HBox alignment="CENTER_LEFT" prefHeight="94.0" prefWidth="250.0" spacing="20.0">
                                  <children>
                                     <FontAwesomeIconView fill="WHITE" glyphName="SEARCH" size="25" />
-                                    <JFXTextField fx:id="tfBuscar" labelFloat="true" prefHeight="27.0" prefWidth="192.0" promptText="Buscar" />
+                                    <JFXTextField fx:id="tfBuscar" labelFloat="true" onAction="#onEnter" prefHeight="27.0" prefWidth="192.0" promptText="Buscar" />
                                  </children>
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -155,21 +154,20 @@
                                     <Insets />
                                  </VBox.margin>
                               </Label>
-                              <JFXTreeTableView fx:id="tablaCanciones" prefWidth="894.0" VBox.vgrow="ALWAYS">
-                                 <columns>
-                                    <TreeTableColumn fx:id="colTitulo" prefWidth="75.0" text="Título" />
-                                    <TreeTableColumn fx:id="colArtista" prefWidth="75.0" text="Artista" />
-                                    <TreeTableColumn fx:id="colAlbum" prefWidth="75.0" text="Album" />
-                                    <TreeTableColumn fx:id="colFecha" prefWidth="75.0" text="Agregado" />
-                                    <TreeTableColumn fx:id="colDuracion" prefWidth="75.0" text="Duración" />
-                                 </columns>
+                              <TableView fx:id="tablaCanciones" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                                <columns>
+                                  <TableColumn fx:id="columnaTitulo" prefWidth="75.0" text="Título" />
+                                  <TableColumn fx:id="columnaAlbum" prefWidth="75.0" text="Álbum" />
+                                    <TableColumn fx:id="columnaArtista" prefWidth="75.0" text="Artista" />
+                                    <TableColumn fx:id="columnaDuracion" prefWidth="75.0" text="Duración" />
+                                </columns>
                                  <columnResizePolicy>
-                                    <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
-                              </JFXTreeTableView>
+                              </TableView>
                            </children>
                            <padding>
-                              <Insets left="20.0" right="20.0" />
+                              <Insets bottom="20.0" left="20.0" right="20.0" />
                            </padding>
                         </VBox>
                      </children>

@@ -62,9 +62,8 @@ SplitPane {
     -fx-padding: 0;
 }
 
-.tree-table-view .column-header{
+.table-view .column-header{
     -fx-border-width: 0;
-    -fx-font-family: "Raleway";
 }
 
 .jfx-progress-bar > .track, .jfx-progress-bar > .bar {

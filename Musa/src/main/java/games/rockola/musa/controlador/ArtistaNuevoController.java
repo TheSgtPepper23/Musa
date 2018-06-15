@@ -19,7 +19,6 @@ import games.rockola.musa.ws.HttpUtils;
 import games.rockola.musa.ws.pojos.Artista;
 import games.rockola.musa.ws.pojos.Mensaje;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;

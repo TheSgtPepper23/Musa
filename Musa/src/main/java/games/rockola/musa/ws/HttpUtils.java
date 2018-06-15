@@ -106,6 +106,20 @@ public class HttpUtils {
         return invocarServicioWeb("genero/recuperarGeneros", "GET", null);
     }
     
+    public static Mensaje recuperarTodasCanciones() {
+        return invocarServicioWeb("cancion/recuperarTodas", "GET", null);
+    }
+    
+    public static Mensaje recuperarPlaylistsMelomano(Integer idMelomano) {
+        String params = String.format("idMelomano=%s", idMelomano);
+        return invocarServicioWeb("playlist/recuperarMelomano", "POST", params);
+    }
+    
+    public static Mensaje buscarCancion(String nombre) {
+        String params = String.format("nombre=%s", nombre);
+        return invocarServicioWeb("cancion/buscar", "POST", params);
+    }
+    
     private static Mensaje invocarServicioWeb(String url, String tipoinvocacion, String parametros){
         HttpURLConnection c = null;
         URL u = null;
