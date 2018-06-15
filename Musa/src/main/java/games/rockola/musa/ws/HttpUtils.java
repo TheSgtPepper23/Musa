@@ -102,6 +102,10 @@ public class HttpUtils {
         return invocarServicioWeb("artista/recuperarFotos", "POST", params);
     }
     
+    public static Mensaje recuperarGeneros() {
+        return invocarServicioWeb("genero/recuperarGeneros", "GET", null);
+    }
+    
     private static Mensaje invocarServicioWeb(String url, String tipoinvocacion, String parametros){
         HttpURLConnection c = null;
         URL u = null;

@@ -99,3 +99,28 @@ JFXRadioButton {
     -fx-background-color: #252525;
     -fx-text-fill: white;
 }
+
+.jfx-combo-box{
+    -fx-background-color: #252525;
+    -jfx-focus-color: #0085d7;
+    -jfx-unfocus-color: #252525;
+    -fx-prompt-text-fill: white;
+}
+
+.combo-box .cell{
+    -fx-text-fill: white;
+}
+
+.combo-box-popup .list-view .jfx-list-cell:odd:selected > .jfx-rippler > StackPane,
+.combo-box-popup .list-view .jfx-list-cell:even:selected > .jfx-rippler > StackPane {
+    -jfx-background-color: #252525;
+}
+
+.combo-box-popup .list-view .list-cell:hover {
+    -fx-text-fill: #0085d7;
+}
+
+.combo-box-popup .list-view .jfx-list-cell:odd,
+.combo-box-popup .list-view .jfx-list-cell:even {
+    -jfx-background-color: #252525;
+}

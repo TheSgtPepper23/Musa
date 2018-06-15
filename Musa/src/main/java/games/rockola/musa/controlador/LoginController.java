@@ -99,6 +99,16 @@ public class LoginController implements Initializable {
         }
     }
     
+    @FXML
+    public void nuevoArtista() {
+        MainApp main = new MainApp();
+        try {
+            main.cambiarEscena(5);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
     private void activarInicio() {
         if (tfNombre.getText().isEmpty() || tfContra.getText().isEmpty()) {
             btnIniciarSesion.setDisable(true);

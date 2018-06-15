@@ -38,6 +38,11 @@ public class MainApp extends Application {
                         "/fxml/Artista.fxml")), 800, 600));
                 ventana.centerOnScreen();
                 break;
+            case 5:
+                ventana.setScene(new Scene(FXMLLoader.load(getClass().getResource(
+                        "/fxml/ArtistaNuevo.fxml")), 600, 600));
+                ventana.centerOnScreen();
+                break;
         }
         
     }

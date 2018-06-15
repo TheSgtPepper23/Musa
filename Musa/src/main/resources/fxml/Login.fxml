@@ -45,7 +45,7 @@
                <children>
                   <Hyperlink fx:id="linkRegistro" onAction="#registrarUsuario" text="Registrarse" />
                   <Hyperlink fx:id="linkRecuperacion" onAction="#dialogoRecuperacion" text="¿Olvidó su contraseña?" />
-                  <Hyperlink text="¿Eres un artista?" />
+                  <Hyperlink onAction="#nuevoArtista" text="¿Eres un artista?" />
                </children>
             </HBox>
          </children>
