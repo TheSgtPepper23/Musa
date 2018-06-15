@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 
 public class MainApp extends Application {
@@ -50,6 +51,7 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         ventana = stage;
+        ventana.setResizable(false);
         stage.centerOnScreen();
         stage.setTitle("Musa");
         stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/fxml/Login.fxml")), 1152, 720));

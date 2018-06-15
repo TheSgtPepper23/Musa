@@ -54,9 +54,6 @@ public class ArtistaController implements Initializable {
 
     @FXML
     private JFXListView<File> listaAlbumes;
-
-    @FXML
-    private JFXButton btnGuardar;
     
     @FXML
     private JFXButton agregarImagen;
@@ -65,6 +62,8 @@ public class ArtistaController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -119,13 +118,12 @@ public class ArtistaController implements Initializable {
         Mensaje mensaje = HttpUtils.recuperarFotosArtista(artista.getIdArtista());
         Type listaFotos = new TypeToken<ArrayList<FotoArtista>>(){}.getType();
         List<FotoArtista> fotosRecuperadas = new Gson().fromJson(mensaje.getMensaje(), listaFotos);
-        for (FotoArtista foto : fotosRecuperadas) {
+        fotosRecuperadas.forEach((foto) -> {
             try {
                 listaImagenes.getItems().add(Imagenes.decodificarImagen(foto.getFoto()));
             } catch (Exception ex) {
-                ex.printStackTrace();
             }
-        }
+        });
     }   
         
     @FXML
@@ -138,7 +136,6 @@ public class ArtistaController implements Initializable {
             try {
                 listaImagenes.getItems().add(Imagenes.archivoAImagen(archivo));
             } catch (Exception ex) {
-                ex.printStackTrace();
             }
             if(listaImagenes.getItems().size() > 4) {
                 agregarImagen.setDisable(true);
@@ -154,7 +151,6 @@ public class ArtistaController implements Initializable {
             try {
                 fotos.add(new FotoArtista(Imagenes.imagenAString(imagen), artista.getIdArtista()));
             } catch (Exception ex) {
-                ex.printStackTrace();
             }
         });
         
@@ -166,7 +162,7 @@ public class ArtistaController implements Initializable {
                 mensajeEliminar.getEstado().equals("16")){
             new Dialogo(mensaje.getMensaje(), ButtonType.OK).show();
         } else {
-            new Dialogo(mensaje.getMensaje(), ButtonType.OK).show();
+            new Dialogo("17", ButtonType.OK).show();
         }
     }
     

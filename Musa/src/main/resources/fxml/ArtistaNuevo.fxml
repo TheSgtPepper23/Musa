@@ -8,16 +8,16 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="600.0" styleClass="mainFxmlClass" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="games.rockola.musa.controlador.ArtistaNuevoController">
    <children>
-      <VBox layoutX="213.0" layoutY="119.0" prefHeight="800.0" prefWidth="700.0" spacing="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox layoutX="213.0" layoutY="119.0" prefHeight="575.0" prefWidth="600.0" spacing="30.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <JFXTextField fx:id="tfNombre" labelFloat="true" prefHeight="0.0" prefWidth="440.0" promptText="Nombre del artista">
                <font>
@@ -38,10 +38,10 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="69.0" prefWidth="440.0" spacing="10.0">
                <children>
-                  <JFXListView fx:id="listaImagenes" orientation="HORIZONTAL" prefHeight="100.0" prefWidth="502.0" HBox.hgrow="ALWAYS" />
-                  <JFXButton fx:id="agregarImagen" contentDisplay="CENTER" prefHeight="35.0" prefWidth="35.0" text=" ">
+                  <JFXListView fx:id="listaImagenes" orientation="HORIZONTAL" prefHeight="69.0" prefWidth="392.0" HBox.hgrow="ALWAYS" />
+                  <JFXButton fx:id="agregarImagen" contentDisplay="CENTER" onAction="#anadirImagen" prefHeight="35.0" prefWidth="35.0" text=" ">
                      <graphic>
                         <FontAwesomeIconView glyphName="PLUS" size="25" />
                      </graphic>
@@ -50,13 +50,7 @@
             </HBox>
             <HBox alignment="CENTER" spacing="40.0" VBox.vgrow="NEVER">
                <children>
-                  <JFXButton fx:id="btnCancelar" onAction="#regresaLogin" prefHeight="28.0" prefWidth="110.0" text="Cancelar">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </JFXButton>
-                  <Pane prefHeight="0.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                  <JFXButton fx:id="btnGuardar" prefHeight="28.0" prefWidth="110.0" text="Guardar">
+                  <JFXButton fx:id="btnGuardar" onAction="#guardarArtista" prefHeight="28.0" prefWidth="110.0" text="Guardar">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -68,5 +62,6 @@
             <Insets bottom="30.0" left="80.0" right="80.0" top="40.0" />
          </padding>
       </VBox>
+      <Hyperlink layoutX="14.0" layoutY="563.0" onAction="#regresaLogin" text="Inicio de sesión" />
    </children>
 </AnchorPane>

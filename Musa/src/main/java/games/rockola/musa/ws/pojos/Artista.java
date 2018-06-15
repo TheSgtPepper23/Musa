@@ -13,14 +13,14 @@ public class Artista {
     private Integer idArtista;
     private String nombre;
     private String biografia;
-    private String genero;
+    private Integer genero;
     private String correoElectronico;
     private String password;
 
     public Artista() {
     }
 
-    public Artista(Integer idArtista, String nombre, String biografia, String genero, String correoElectronico, String password) {
+    public Artista(Integer idArtista, String nombre, String biografia, Integer genero, String correoElectronico, String password) {
         this.idArtista = idArtista;
         this.nombre = nombre;
         this.biografia = biografia;
@@ -29,7 +29,7 @@ public class Artista {
         this.password = password;
     }
 
-    public Artista(String nombre, String biografia, String genero, String correoElectronico, String password) {
+    public Artista(String nombre, String biografia, Integer genero, String correoElectronico, String password) {
         this.nombre = nombre;
         this.biografia = biografia;
         this.genero = genero;
@@ -61,11 +61,11 @@ public class Artista {
         this.biografia = biogafia;
     }
 
-    public String getGenero() {
+    public Integer getGenero() {
         return genero;
     }
 
-    public void setGenero(String genero) {
+    public void setGenero(Integer genero) {
         this.genero = genero;
     }
 

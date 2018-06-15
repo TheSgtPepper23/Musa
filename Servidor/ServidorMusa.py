@@ -7,7 +7,7 @@ from base64 import b64encode
 app = Flask(__name__)
 
 musa_db = MySQLDatabase(
-    "musa", host="localhost", port=3306, user="root", passwd="Emilio08")
+    "musa", host="localhost", port=3306, user="euterpe", passwd="An6248322")
 
 class MySQLModel(Model):
     """Database model"""
@@ -167,7 +167,7 @@ def agregar_artista():
             artista = Artista.create(
                 nombre = request.form['nombre'],
                 biografia = request.form['biografia'],
-                genero = request.form['genero'],
+                idGenero = request.form['genero'],
                 correoElectronico = request.form['correoElectronico'],
                 password = request.form['password']
             )
@@ -316,7 +316,7 @@ def recuperar_playlist():
 @app.route("/genero/recuperarGeneros", methods=["GET"])
 def recuperar_generos():
     generos = []
-    query_generos = Genero.select(Genero.genero)
+    query_generos = Genero.select()
 
     for genero in query_generos:
         generos.append(model_to_dict(genero))

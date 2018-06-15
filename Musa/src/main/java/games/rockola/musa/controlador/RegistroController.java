@@ -112,10 +112,10 @@ public class RegistroController implements Initializable {
     }
     
     private void activarBoton(){
-        if(tfNombreUsuario.getText().isEmpty() || tfNombre.getText().isEmpty() || 
-                tfApellidos.getText().isEmpty() || tfContra.getText().isEmpty() || 
-                tfCorreo.getText().isEmpty() || tfRuta.getText().isEmpty() || 
-                tfConfirmContra.getText().isEmpty()) {
+        if(tfNombreUsuario.getText().trim().isEmpty() || tfNombre.getText().trim().isEmpty() || 
+                tfApellidos.getText().trim().isEmpty() || tfContra.getText().trim().isEmpty() || 
+                tfCorreo.getText().trim().isEmpty() || tfRuta.getText().trim().isEmpty() || 
+                tfConfirmContra.getText().trim().isEmpty()) {
             btnGuardar.setDisable(true);
         } else {
             btnGuardar.setDisable(false);
@@ -138,7 +138,7 @@ public class RegistroController implements Initializable {
         if(tfContra.getText().equals(tfConfirmContra.getText())){
             Melomano nuevo = new Melomano();
             nuevo.setNombreMelomano(tfNombreUsuario.getText());
-            nuevo.setCorreoElectronico(tfCorreo.getText());
+            nuevo.setCorreoElectronico(tfCorreo.getText().toLowerCase());
             nuevo.setNombre(tfNombre.getText());
             nuevo.setApellidos(tfApellidos.getText());
             nuevo.setPassword(Cifrado.cifrarCadena(tfContra.getText()));

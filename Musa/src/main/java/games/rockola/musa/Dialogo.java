@@ -26,12 +26,12 @@ public class Dialogo extends Alert{
            getClass().getResource("/styles/Styles.css").toExternalForm());
         dialog.getStyleClass().add("Dialogos");
         
-        if (estado.equals("5") || estado.equals("4") || estado.equals("16")) {
+        if (estado.equals("5") || estado.equals("4") || estado.equals("16") || estado.equals("12")) {
             this.setAlertType(AlertType.INFORMATION);
             this.setHeaderText("¡Éxito!");
             this.setTitle("¡Éxito!"); 
         } else if (estado.equals("1") || estado.equals("2") || estado.equals("3") || 
-                estado.equals("6") || estado.equals("300")) {
+                estado.equals("6") || estado.equals("300") || estado.equals("13")) {
             this.setAlertType(AlertType.WARNING);
             this.setHeaderText("¡Atención!");
             this.setTitle("¡Atención!");
@@ -52,6 +52,12 @@ public class Dialogo extends Alert{
                 break;
             case "17":
                 this.setContentText("Error al actualizar los datos");
+                break;
+            case "12":
+                this.setContentText("Artista registrado correctamente");
+                break;
+            case "13":
+                this.setContentText("Ocurrió un error al guardar al artista");
                 break;
             default:
                 this.setContentText("El mensaje " + estado + " no está registrado");

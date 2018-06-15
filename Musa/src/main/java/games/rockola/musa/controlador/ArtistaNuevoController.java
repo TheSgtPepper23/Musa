@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package games.rockola.musa.controlador;
 
 import com.google.gson.Gson;
@@ -14,11 +9,18 @@ import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
+import games.rockola.musa.Dialogo;
+import games.rockola.musa.Imagenes;
 import games.rockola.musa.MainApp;
+import static games.rockola.musa.controlador.LoginController.artistaLogueado;
+import games.rockola.musa.ws.Cifrado;
 import games.rockola.musa.ws.HttpUtils;
 import games.rockola.musa.ws.pojos.Artista;
+import games.rockola.musa.ws.pojos.FotoArtista;
 import games.rockola.musa.ws.pojos.Mensaje;
+import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,11 +29,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 
-/**
- *
- * @author José Andrés Domínguez González
- */
 public class ArtistaNuevoController implements Initializable{
     
     @FXML
@@ -50,13 +56,10 @@ public class ArtistaNuevoController implements Initializable{
     private JFXPasswordField tfConfirm;
 
     @FXML
-    private JFXListView<?> listaImagenes;
+    private JFXListView<Image> listaImagenes;
 
     @FXML
     private JFXButton agregarImagen;
-
-    @FXML
-    private JFXButton btnCancelar;
 
     @FXML
     private JFXButton btnGuardar;
@@ -83,9 +86,52 @@ public class ArtistaNuevoController implements Initializable{
             activarBotonGuardar();
         });
         
+        listaImagenes.setCellFactory(lv -> {
+            ImageView vista = new ImageView();
+            ListCell<Image> cell = new ListCell<>();
+            
+            ContextMenu contextMenu = new ContextMenu();
+            MenuItem eliminar = new MenuItem("Eliminar");
+            eliminar.setOnAction((event) -> {
+                listaImagenes.getItems().remove(cell.getItem());
+                if(listaImagenes.getItems().size() < 5){
+                    agregarImagen.setDisable(false);
+                }  
+            });
+            contextMenu.getItems().addAll(eliminar);
+
+            cell.emptyProperty().addListener((obs, wasEmpty, isNowEmpty) -> {
+                if (isNowEmpty) {
+                    cell.setContextMenu(null);
+                } else {
+                    cell.setContextMenu(contextMenu);
+                }
+            });
+            
+            cell.itemProperty().addListener((obs, oldItem, newItem) -> {
+                vista.setFitHeight(30);
+                vista.setFitWidth(30);
+                if (newItem != null) {
+                    try {
+                        vista.setImage(newItem);
+                    } catch (Exception ex) {}
+                }
+            });
+            
+            cell.emptyProperty().addListener((obs, wasEmpty, isEmpty) -> {
+                if (isEmpty) {
+                    cell.setGraphic(null);
+                } else {
+                    cell.setGraphic(vista);
+                }
+            });
+            cell.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+            return cell ;
+        });
+        
         Mensaje mensajeGeneros = HttpUtils.recuperarGeneros();
-        List<Genero> generos = new Gson().fromJson(mensajeGeneros.getMensaje(), 
-                new TypeToken<ArrayList<Genero>>(){}.getType());
+        Type tipoGeenero = new TypeToken<ArrayList<Genero>>(){}.getType();
+        List<Genero> generos = new Gson().fromJson(mensajeGeneros.getMensaje(), tipoGeenero);
         ObservableList<Genero> generosObservables = FXCollections.observableArrayList(generos);
         comboGenero.setItems(generosObservables);
     }
@@ -101,8 +147,9 @@ public class ArtistaNuevoController implements Initializable{
     }
     
     private void activarBotonGuardar(){
-        if(areaBio.getText().isEmpty() || tfNombre.getText().isEmpty() || tfPass.getText().isEmpty()
-                || tfConfirm.getText().isEmpty() || tfCorreo.getText().isEmpty()){
+        if(areaBio.getText().trim().isEmpty() || tfNombre.getText().trim().isEmpty() || 
+                tfPass.getText().trim().isEmpty() || tfConfirm.getText().trim().isEmpty() || 
+                tfCorreo.getText().trim().isEmpty() || comboGenero.getSelectionModel().isEmpty()){
             btnGuardar.setDisable(true);
         } else {
             btnGuardar.setDisable(false);
@@ -111,7 +158,65 @@ public class ArtistaNuevoController implements Initializable{
     
     @FXML
     public void guardarArtista(){
-        Artista artista = new Artista(tfNombre.getText(), areaBio.getText(), "", 
-                tfCorreo.getText(), tfPass.getText());
+        if(tfPass.getText().equals(tfConfirm.getText())){
+            Artista artista = new Artista(tfNombre.getText(), areaBio.getText(), 
+                    comboGenero.getSelectionModel().getSelectedItem().getIdGenero(), 
+                    tfCorreo.getText().toLowerCase(), Cifrado.cifrarCadena(tfPass.getText()));
+            Mensaje mensaje = HttpUtils.agregarArtista(artista);
+            
+            if (mensaje.getMensaje().equals("12")) {
+                if (subirFotos().equals("16")){
+                    new Dialogo(mensaje.getMensaje(), ButtonType.OK).show();
+                    limpiarCampos();
+                } else {
+                    new Dialogo("13", ButtonType.OK).show();
+                }
+            }
+        } else {
+            new Dialogo("300", ButtonType.OK).show();
+        }
+    }
+    
+    @FXML
+    public void anadirImagen(){
+        FileChooser seleccionarFoto = new FileChooser();
+        seleccionarFoto.getExtensionFilters().add(new FileChooser.ExtensionFilter(
+                "Imágenes", "*.jpg"));
+        File archivo = seleccionarFoto.showOpenDialog(MainApp.getVentana());
+        if(archivo != null) {
+            try {
+                listaImagenes.getItems().add(Imagenes.archivoAImagen(archivo));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            if(listaImagenes.getItems().size() > 4) {
+                agregarImagen.setDisable(true);
+            }
+        }
+    }
+    
+    private String subirFotos() {
+        Mensaje mensajeArtista = HttpUtils.recuperarArtista(tfCorreo.getText());
+        Artista artista = new Gson().fromJson(mensajeArtista.getMensaje(), Artista.class);
+        List<FotoArtista> fotos = new ArrayList<>();
+        
+        listaImagenes.getItems().forEach((imagen) -> {
+            try {
+                fotos.add(new FotoArtista(Imagenes.imagenAString(imagen), artista.getIdArtista()));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+        Mensaje mensajeFotos = HttpUtils.subirFotos(fotos);
+        return mensajeFotos.getMensaje();
+    }
+    
+    private void limpiarCampos() {
+        tfNombre.setText("");
+        areaBio.setText("");
+        tfCorreo.setText("");
+        tfPass.setText("");
+        tfConfirm.setText("");
+        listaImagenes.setItems(null);
     }
 }

@@ -2,7 +2,7 @@ AnchorPane, .Dialogos, .Dialogos:header .header-panel, .Dialogos > .button-bar >
     -fx-background-color: #252525;
 }
 
-VBox, HBox, BordePane, Pane, JFXTreeTableView{
+VBox, HBox, BordePane, Pane, TableView{
     -fx-background-color: transparent;
 }
 
@@ -86,11 +86,7 @@ JFXRadioButton {
     -fx-text-fill: white;
 }
 
-.list-cell:even { 
-    -fx-background-color:  #252525;
-}
-
-.list-cell:odd { 
+.list-cell:even, .list-cell:odd { 
     -fx-background-color:  #252525;
 }
 
@@ -122,4 +118,65 @@ JFXRadioButton {
 .combo-box-popup .list-view .jfx-list-cell:odd,
 .combo-box-popup .list-view .jfx-list-cell:even {
     -jfx-background-color: #252525;
+}
+
+.table-view .table-cell{
+    -fx-text-fill: white;
+}
+
+.table-row-cell, .table-row-cell:odd{
+    -fx-background-color: #252525;
+    -fx-table-cell-border-color: #252525;
+    -fx-border-color: #252525;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #0085d7;
+    -fx-table-cell-border-color: #252525;
+    -fx-border-color: #252525;
+}
+
+.table-view{
+    -fx-border-color: #252525;
+}
+
+.table-view .column-header-background{
+    -fx-background-color: #252525;
+}
+
+.table-view .column-header{
+    -fx-border-color: white;
+}
+
+.table-view .column-header-background .label{
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+}
+
+.accordion {
+    -fx-border-color: transparent;
+}
+
+.titled-pane:focused > .title {
+    -fx-background-color: #0085d7;
+}
+
+.titled-pane> .title {
+    -fx-background-color: #252525;
+}
+
+.titled-pane:focused > .title > .arrow-button .arrow, .titled-pane > .title > .arrow-button .arrow {
+    -fx-background-color: white;
+}
+
+.titled-pane > .title > .text {
+    -fx-fill: white;
+}
+
+.titled-pane > .title {
+    -fx-border-color: transparent;
 }

@@ -61,8 +61,8 @@ public class HttpUtils {
     
     public static Mensaje agregarArtista(Artista artista) {
         String params = String.format("nombre=%s&biografia=%s&genero=%s&correoElectronico=%s"
-                + "&password=%s", artista.getNombre(), artista.getBiografia(), artista.getGenero(),
-                artista.getCorreoElectronico(), artista.getPassword());
+                + "&password=%s&genero=%s", artista.getNombre(), artista.getBiografia(), artista.getGenero(),
+                artista.getCorreoElectronico(), artista.getPassword(), artista.getGenero());
         return invocarServicioWeb("artista/agregar", "POST", params);
     }
     

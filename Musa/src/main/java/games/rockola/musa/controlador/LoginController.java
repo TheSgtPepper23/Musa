@@ -110,7 +110,7 @@ public class LoginController implements Initializable {
     }
     
     private void activarInicio() {
-        if (tfNombre.getText().isEmpty() || tfContra.getText().isEmpty()) {
+        if (tfNombre.getText().trim().isEmpty() || tfContra.getText().trim().isEmpty()) {
             btnIniciarSesion.setDisable(true);
         } else {
             btnIniciarSesion.setDisable(false);
