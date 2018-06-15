@@ -31,6 +31,8 @@ class MySQLModel(Model):
 # 15 - No se pudo agregar la canción
 # 16 - Se actualizó el artista
 # 17 - Error al actualizar el artista
+# 18 - Se actualizó el melómano
+# 19 - Error al actualizar el melómano
 # 300 - Contraseñas no coinciden
 
 class Melomano(MySQLModel):
@@ -104,6 +106,21 @@ class Historial(MySQLModel):
 def main():
     return jsonify("Musa server. versión 1.0")
 
+@app.route("/login", methods=["POST"])
+def iniciar_sesion():
+    mensaje = 2
+    for melomano in Melomano.select():
+        if (melomano.nombreMelomano == request.form['username']) & (melomano.password == request.form['password']):
+            mensaje = 51
+    
+    for artista in Artista.select():
+        if (artista.correoElectronico == request.form['username']) & (artista.password == request.form['password']):
+            mensaje = 52
+    
+    return jsonify(mensaje)
+
+"""Melómano WS"""
+
 @app.route("/melomano/agregar", methods=["POST"])
 def registrar_melomano():
     with musa_db.atomic():
@@ -120,23 +137,28 @@ def registrar_melomano():
             mensaje = 6
     return jsonify(mensaje)
 
-@app.route("/login", methods=["POST"])
-def iniciar_sesion():
-    mensaje = 2
-    for melomano in Melomano.select():
-        if (melomano.nombreMelomano == request.form['username']) & (melomano.password == request.form['password']):
-            mensaje = 51
-    
-    for artista in Artista.select():
-        if (artista.correoElectronico == request.form['username']) & (artista.password == request.form['password']):
-            mensaje = 52
-    
-    return jsonify(mensaje)
-
 @app.route("/melomano/recuperar", methods=["POST"])
 def recuperarMelomano():
     melomano = Melomano.get(Melomano.nombreMelomano == request.form['nombreMelomano'])
     return jsonify(model_to_dict(melomano))
+
+@app.route("/melomano/actualizar", methods=["POST"])
+def actualizar_melomano():
+    try:
+        melomano = Melomano.select().where(Melomano.idMelomano == request.form["idMelomano"]).get()
+        melomano.nombre = request.form["nombre"]
+        melomano.apellidos = request.form["apellidos"]
+        melomano.password = request.form["password"]
+        melomano.fotoPerfil = request.form["fotoPerfil"]
+        melomano.correoElectronico = request.form["correoElectronico"]
+
+        melomano.save()
+        mensaje = 18
+    except IntegrityError:
+        mensaje = 19
+    return jsonify(mensaje)
+
+"""Artista WS"""
 
 @app.route("/artista/agregar", methods=["POST"])
 def agregar_artista():
@@ -202,21 +224,7 @@ def recuperar_fotos_artista():
 
     return (jsonify(lista_foto))
 
-@app.route("/album/agregar", methods=["POST"])
-def agregar_album():
-    with musa_db.atomic():
-        try:
-            album = Album.create(
-                nombre = request.form['nombre'],
-                portada = request.form['portada'],
-                fechaLanzamiento = request.form['fechaLanzamiento'],
-                companiaDiscografica = request.form['companiaDiscografica'],
-                idArtista = request.form['idArtista']
-            )
-            mensaje = 10
-        except IntegrityError:
-            mensaje = 11
-    return jsonify(mensaje)
+"""Canción WS"""
 
 @app.route("/cancion/agregar", methods=["POST"])
 def agregar_cancion():
@@ -233,7 +241,6 @@ def agregar_cancion():
         except IntegrityError:
             mensaje = 15
     return jsonify(mensaje)
-
 
 @app.route("/cancion/cancionesArtista", methods=["POST"])
 def recuperar_canciones_artista():
@@ -273,6 +280,26 @@ def recuperar_todas_canciones():
     
     return jsonify(songs)
 
+"""Álbum WS"""
+
+@app.route("/album/agregar", methods=["POST"])
+def agregar_album():
+    with musa_db.atomic():
+        try:
+            album = Album.create(
+                nombre = request.form['nombre'],
+                portada = request.form['portada'],
+                fechaLanzamiento = request.form['fechaLanzamiento'],
+                companiaDiscografica = request.form['companiaDiscografica'],
+                idArtista = request.form['idArtista']
+            )
+            mensaje = 10
+        except IntegrityError:
+            mensaje = 11
+    return jsonify(mensaje)
+
+"""Playlist WS"""
+
 @app.route("/playlist/recuperarMelomano", methods=["POST"])
 def recuperar_playlist():
     listas = Playlist.select().where(Playlist.idMelomano == request.form["idMelomano"])
@@ -283,6 +310,8 @@ def recuperar_playlist():
         playlists.append(oneLista)
 
     return jsonify(playlists)
+
+"""Género WS"""
 
 @app.route("/genero/recuperarGeneros", methods=["GET"])
 def recuperar_generos():
