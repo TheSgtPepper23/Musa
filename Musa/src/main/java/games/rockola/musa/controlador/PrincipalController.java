@@ -6,7 +6,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXSlider;
 import com.jfoenix.controls.JFXTextField;
-import games.rockola.musa.Imagenes;
+import games.rockola.musa.servicios.Imagen;
 import games.rockola.musa.ws.HttpUtils;
 import games.rockola.musa.ws.pojos.ListaCancion;
 import games.rockola.musa.ws.pojos.Melomano;
@@ -119,7 +119,7 @@ public class PrincipalController implements Initializable {
         });
         
         try {
-            imagenUsuario.setImage(Imagenes.decodificarImagen(
+            imagenUsuario.setImage(Imagen.decodificarImagen(
                     LoginController.melomanoLogueado.getFotoPerfil()));
         } catch (Exception ex) {
             ex.printStackTrace();

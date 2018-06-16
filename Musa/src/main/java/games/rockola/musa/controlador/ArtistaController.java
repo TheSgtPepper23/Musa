@@ -11,8 +11,8 @@ import com.google.gson.reflect.TypeToken;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
-import games.rockola.musa.Dialogo;
-import games.rockola.musa.Imagenes;
+import games.rockola.musa.servicios.Dialogo;
+import games.rockola.musa.servicios.Imagen;
 import games.rockola.musa.MainApp;
 import games.rockola.musa.ws.HttpUtils;
 import games.rockola.musa.ws.pojos.Artista;
@@ -120,7 +120,7 @@ public class ArtistaController implements Initializable {
         List<FotoArtista> fotosRecuperadas = new Gson().fromJson(mensaje.getMensaje(), listaFotos);
         fotosRecuperadas.forEach((foto) -> {
             try {
-                listaImagenes.getItems().add(Imagenes.decodificarImagen(foto.getFoto()));
+                listaImagenes.getItems().add(Imagen.decodificarImagen(foto.getFoto()));
             } catch (Exception ex) {
             }
         });
@@ -134,7 +134,7 @@ public class ArtistaController implements Initializable {
         File archivo = seleccionarFoto.showOpenDialog(MainApp.getVentana());
         if(archivo != null) {
             try {
-                listaImagenes.getItems().add(Imagenes.archivoAImagen(archivo));
+                listaImagenes.getItems().add(Imagen.archivoAImagen(archivo));
             } catch (Exception ex) {
             }
             if(listaImagenes.getItems().size() > 4) {
@@ -149,7 +149,7 @@ public class ArtistaController implements Initializable {
         
         listaImagenes.getItems().forEach((imagen) -> {
             try {
-                fotos.add(new FotoArtista(Imagenes.imagenAString(imagen), artista.getIdArtista()));
+                fotos.add(new FotoArtista(Imagen.imagenAString(imagen), artista.getIdArtista()));
             } catch (Exception ex) {
             }
         });

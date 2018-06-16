@@ -1,4 +1,4 @@
-package games.rockola.musa.ws;
+package games.rockola.musa.servicios;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;

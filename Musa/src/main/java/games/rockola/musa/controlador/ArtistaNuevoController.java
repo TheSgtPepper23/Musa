@@ -9,11 +9,11 @@ import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
-import games.rockola.musa.Dialogo;
-import games.rockola.musa.Imagenes;
+import games.rockola.musa.servicios.Dialogo;
+import games.rockola.musa.servicios.Imagen;
 import games.rockola.musa.MainApp;
 import static games.rockola.musa.controlador.LoginController.artistaLogueado;
-import games.rockola.musa.ws.Cifrado;
+import games.rockola.musa.servicios.Cifrado;
 import games.rockola.musa.ws.HttpUtils;
 import games.rockola.musa.ws.pojos.Artista;
 import games.rockola.musa.ws.pojos.FotoArtista;
@@ -185,7 +185,7 @@ public class ArtistaNuevoController implements Initializable{
         File archivo = seleccionarFoto.showOpenDialog(MainApp.getVentana());
         if(archivo != null) {
             try {
-                listaImagenes.getItems().add(Imagenes.archivoAImagen(archivo));
+                listaImagenes.getItems().add(Imagen.archivoAImagen(archivo));
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -202,7 +202,7 @@ public class ArtistaNuevoController implements Initializable{
         
         listaImagenes.getItems().forEach((imagen) -> {
             try {
-                fotos.add(new FotoArtista(Imagenes.imagenAString(imagen), artista.getIdArtista()));
+                fotos.add(new FotoArtista(Imagen.imagenAString(imagen), artista.getIdArtista()));
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

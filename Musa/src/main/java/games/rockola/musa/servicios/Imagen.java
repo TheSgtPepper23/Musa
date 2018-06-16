@@ -1,4 +1,4 @@
-package games.rockola.musa;
+package games.rockola.musa.servicios;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -11,7 +11,7 @@ import javafx.scene.image.Image;
 import javax.imageio.ImageIO;
 import org.apache.commons.codec.binary.Base64;
 
-public class Imagenes {
+public class Imagen {
 //    
 
     public static String codificarImagen(File imagen) throws IOException {

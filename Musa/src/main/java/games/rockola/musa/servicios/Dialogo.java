@@ -1,4 +1,4 @@
-package games.rockola.musa;
+package games.rockola.musa.servicios;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
