@@ -7,7 +7,7 @@ from base64 import b64encode
 app = Flask(__name__)
 
 musa_db = MySQLDatabase(
-    "musa", host="localhost", port=3306, user="euterpe", passwd="An6248322")
+    "musa", host="localhost", port=3306, user="root", passwd="Emilio08")
 
 class MySQLModel(Model):
     """Database model"""
@@ -33,6 +33,8 @@ class MySQLModel(Model):
 # 17 - Error al actualizar el artista
 # 18 - Se actualizó el melómano
 # 19 - Error al actualizar el melómano
+# 20 - Se agregó la canción a la playlist
+# 21 - No se agregó la canción a la playlist
 # 300 - Contraseñas no coinciden
 
 class Melomano(MySQLModel):
@@ -310,6 +312,32 @@ def recuperar_playlist():
         playlists.append(oneLista)
 
     return jsonify(playlists)
+
+@app.route("/playlist/agregaAPlaylist", methods=["POST"])
+def agregar_a_playlist():
+    with musa_db.atomic():
+        try:
+            playlist = CancionesPlaylist.create(
+                idPlaylist = request.form['idPlaylist'],
+                idCancion = request.form['idCancion']
+            )
+            mensaje = 20
+        except IntegrityError:
+            mensaje = 21
+        return jsonify(mensaje)
+
+@app.route("/playlist/recuperarCanciones", methods=["POST"])
+def recuperar_de_playlist():
+    canciones = Cancion.select().join(CancionesPlaylist).join(Playlist).where((Playlist.idMelomano == request.form["idMelomano"])
+    & (Playlist.idPlaylist == request.form["idPlaylist"]))
+
+    songs = []
+    for cancion in canciones:
+        song = {"idCancion": cancion.idCancion, "nombre": cancion.nombre, "artista": cancion.idAlbum.idArtista.nombre,
+                "album":cancion.idAlbum.nombre, "duracion": cancion.duracion}
+        songs.append(song)
+
+    return jsonify(songs)
 
 """Género WS"""
 

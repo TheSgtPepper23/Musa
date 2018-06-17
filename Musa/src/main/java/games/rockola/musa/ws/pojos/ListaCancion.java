@@ -1,6 +1,7 @@
 package games.rockola.musa.ws.pojos;
 
 public class ListaCancion {
+
     private String album;
     private String artista;
     private Integer duracion;
@@ -34,8 +35,16 @@ public class ListaCancion {
         this.artista = artista;
     }
 
-    public Integer getDuracion() {
-        return duracion;
+    public String getDuracion() {
+        String duracionString;
+        Integer minutos = 0;
+        while (duracion > 60) {
+            minutos += 1;
+            duracion -= 60;
+        }
+        duracionString = minutos + ":" + duracion;
+
+        return duracionString;
     }
 
     public void setDuracion(Integer duracion) {

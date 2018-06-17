@@ -23,7 +23,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="games.rockola.musa.controlador.PrincipalController">
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="games.rockola.musa.controlador.PrincipalController">
    <children>
       <BorderPane stylesheets="@../styles/Styles.css">
          <top>
@@ -69,7 +69,7 @@
                                           <FontAwesomeIconView fill="WHITE" glyphName="REPEAT" size="12" stroke="WHITE" strokeLineCap="ROUND" strokeWidth="0.0" text="" />
                                        </graphic>
                                     </JFXButton>
-                                    <JFXButton fx:id="btnAtras" alignment="CENTER_RIGHT" contentDisplay="CENTER" ellipsisString="" prefHeight="30.0" prefWidth="30.0" style="-fx-background-radius: 20;" text=" ">
+                                    <JFXButton fx:id="btnAtras" alignment="CENTER_RIGHT" contentDisplay="CENTER" ellipsisString="" onAction="#retrocederCancion" prefHeight="30.0" prefWidth="30.0" style="-fx-background-radius: 20;" text=" ">
                                        <graphic>
                                           <FontAwesomeIconView fill="WHITE" glyphName="BACKWARD" size="15" stroke="WHITE" strokeLineCap="ROUND" textAlignment="CENTER" />
                                        </graphic>
@@ -79,7 +79,7 @@
                                           <FontAwesomeIconView fill="WHITE" glyphName="PLAY" size="20" stroke="WHITE" strokeLineCap="ROUND" strokeWidth="4.0" />
                                        </graphic>
                                     </JFXButton>
-                                    <JFXButton fx:id="btnAdelante" alignment="CENTER_RIGHT" contentDisplay="CENTER" ellipsisString="" prefHeight="30.0" prefWidth="30.0" style="-fx-background-radius: 20;" text=" ">
+                                    <JFXButton fx:id="btnAdelante" alignment="CENTER_RIGHT" contentDisplay="CENTER" ellipsisString="" onAction="#pasarCancion" prefHeight="30.0" prefWidth="30.0" style="-fx-background-radius: 20;" text=" ">
                                        <graphic>
                                           <FontAwesomeIconView fill="WHITE" glyphName="FORWARD" size="15" stroke="WHITE" strokeLineCap="ROUND" />
                                        </graphic>
@@ -156,7 +156,7 @@
                      <children>
                         <VBox prefHeight="570.0" prefWidth="894.0" spacing="40.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <Label fx:id="labelTitulo" prefHeight="37.0" prefWidth="360.0" text="Nombre de la playlist">
+                              <Label fx:id="labelPlaylistTitulo" prefHeight="37.0" prefWidth="360.0" text="Musa">
                                  <font>
                                     <Font size="30.0" />
                                  </font>

@@ -120,6 +120,16 @@ public class HttpUtils {
         return invocarServicioWeb("cancion/buscar", "POST", params);
     }
     
+    public static Mensaje agregaAPlaylist(Integer idPlaylist, Integer idCancion) {
+        String params = String.format("idPlaylist=%s&idCancion=%s", idPlaylist, idCancion);
+        return invocarServicioWeb("playlist/agregaAPlaylist", "POST", params);
+    }
+    
+    public static Mensaje recuperarCancionesDePlaylist(Integer idMelomano, Integer idPlaylist) {
+        String params = String.format("idMelomano=%s&idPlaylist=%s", idMelomano, idPlaylist);
+        return invocarServicioWeb("playlist/recuperarCanciones", "POST", params);
+    }
+    
     private static Mensaje invocarServicioWeb(String url, String tipoinvocacion, String parametros){
         HttpURLConnection c = null;
         URL u = null;
