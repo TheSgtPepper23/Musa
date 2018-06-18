@@ -48,21 +48,21 @@ public class HttpUtils {
     public static Mensaje agregarCancion(Cancion cancion){
         String params = String.format("nombre=%s&idAlbum=%s&idGenero=%s&cancion=%s&duracion=%s", 
                 cancion.getNombre(), cancion.getIdAlbum(), cancion.getIdGenero(), 
-                cancion.getCancion(), cancion.getCancion());
-        return invocarServicioWeb("cancion/agregar", "POSt", params);
+                cancion.getCancion(), cancion.getDuracion());
+        return invocarServicioWeb("cancion/agregar", "POST", params);
     }
     
     public static Mensaje agregarAlbum(Album album){
         String params = String.format("nombre=%s&portada=%s&fechaLanzamiento=%s&"
-                + "companiaDiscografica=%s&idArtista=%s,", album.getNombre(), album.getPortada(),
+                + "companiaDiscografica=%s&idArtista=%s", album.getNombre(), album.getPortada(),
                 album.getFechaLanzamiento(), album.getCompaniaDiscografica(), album.getIdArtista());
         return invocarServicioWeb("album/agregar", "POST", params);       
     }
     
     public static Mensaje agregarArtista(Artista artista) {
         String params = String.format("nombre=%s&biografia=%s&genero=%s&correoElectronico=%s"
-                + "&password=%s&genero=%s", artista.getNombre(), artista.getBiografia(), artista.getGenero(),
-                artista.getCorreoElectronico(), artista.getPassword(), artista.getGenero());
+                + "&password=%s&genero=%s", artista.getNombre(), artista.getBiografia(), artista.getIdGenero(),
+                artista.getCorreoElectronico(), artista.getPassword(), artista.getIdGenero());
         return invocarServicioWeb("artista/agregar", "POST", params);
     }
     
@@ -128,6 +128,19 @@ public class HttpUtils {
     public static Mensaje recuperarCancionesDePlaylist(Integer idMelomano, Integer idPlaylist) {
         String params = String.format("idMelomano=%s&idPlaylist=%s", idMelomano, idPlaylist);
         return invocarServicioWeb("playlist/recuperarCanciones", "POST", params);
+    }
+    
+    public static Mensaje recuperarUltimoAlbum() {
+        return invocarServicioWeb("album/recuperarUltimo", "GET", null);
+    }
+    
+    public static Mensaje actualizarRutaCancion(String ruta) {
+        String params = String.format("ruta=%s", ruta);
+        return invocarServicioWeb("cancion/actualizarRuta", "POST", params);
+    }
+    
+    public static Mensaje getnombreUltimaCancion() {
+        return invocarServicioWeb("cancion/nombreUltimaCancion", "GET", null);
     }
     
     private static Mensaje invocarServicioWeb(String url, String tipoinvocacion, String parametros){

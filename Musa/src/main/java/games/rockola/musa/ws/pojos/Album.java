@@ -15,15 +15,14 @@ public class Album {
     private Integer idAlbum;
     private String nombre;
     private String portada;
-    private Date fechaLanzamiento;
+    private String fechaLanzamiento;
     private String companiaDiscografica;
     private Integer idArtista;
 
     public Album() {
     }
 
-    public Album(Integer idAlbum, String nombre, String portada, Date fechaLanzamiento, String companiaDiscografica, Integer idArtista) {
-        this.idAlbum = idAlbum;
+    public Album(String nombre, String portada, String fechaLanzamiento, String companiaDiscografica, Integer idArtista) {
         this.nombre = nombre;
         this.portada = portada;
         this.fechaLanzamiento = fechaLanzamiento;
@@ -55,11 +54,11 @@ public class Album {
         this.portada = portada;
     }
 
-    public Date getFechaLanzamiento() {
+    public String getFechaLanzamiento() {
         return fechaLanzamiento;
     }
 
-    public void setFechaLanzamiento(Date fechaLanzamiento) {
+    public void setFechaLanzamiento(String fechaLanzamiento) {
         this.fechaLanzamiento = fechaLanzamiento;
     }
 

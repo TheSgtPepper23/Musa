@@ -5,13 +5,19 @@
  */
 package games.rockola.musa.controlador;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import games.rockola.musa.servicios.Imagen;
 import games.rockola.musa.servicios.SubirCancion;
+import games.rockola.musa.ws.HttpUtils;
+import games.rockola.musa.ws.pojos.Album;
+import games.rockola.musa.ws.pojos.Cancion;
+import games.rockola.musa.ws.pojos.Mensaje;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -91,19 +97,30 @@ public class AgregarAlbumController implements Initializable {
     
     @FXML
     public void guardarAlbum() {
+        
+        Album album = new Album(tfNombre.getText(), portadaAlbum, "2018-06-18", "Rockola", LoginController.artistaLogueado.getIdArtista());
+        HttpUtils.agregarAlbum(album);
+        
+        Mensaje mensajeAlbum = HttpUtils.recuperarUltimoAlbum();
+        Type albumType = new TypeToken<Album>() {}.getType();
+        Album albumRecuperado = new Gson().fromJson(mensajeAlbum.getMensaje(), albumType);
+        
         File [] canciones = directorioCanciones.listFiles((dir, name) -> {
             return !name.equals(".DS_Store");
         });
-        for(File cancion : canciones) {
-            new SubirCancion().subir(LoginController.artistaLogueado.getNombre(), 
-                    tfNombre.getText(), cancion);
+        for (File cancion: canciones) {
+            Cancion nuevaSong = new Cancion(cancion.getName(), albumRecuperado.getIdAlbum(), LoginController.artistaLogueado.getIdGenero(), "0", 120);
+            HttpUtils.agregarCancion(nuevaSong);
+            
+            SubirCancion subirCancion = new SubirCancion();
+            subirCancion.subir(cancion);
         }
         
     }
     
     private void activarGuardado () {
         if(tfNombre.getText().isEmpty() || tfRutaCanciones.getText().isEmpty() || tfRutaImagen.getText().isEmpty()){
-            btnGuardar.setDisable(true);
+            btnGuardar.setDisable(false);
         } else {
             btnGuardar.setDisable(false);
         }

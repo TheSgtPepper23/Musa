@@ -7,7 +7,7 @@ from base64 import b64encode
 app = Flask(__name__)
 
 musa_db = MySQLDatabase(
-    "musa", host="localhost", port=3306, user="euterpe", passwd="An6248322")
+    "musa", host="localhost", port=3306, user="root", passwd="Emilio08")
 
 class MySQLModel(Model):
     """Database model"""
@@ -192,7 +192,12 @@ def actualizar_artista():
 @app.route("/artista/recuperarArtista", methods=["POST"])
 def recuperar_artista():
     artista = Artista.get(Artista.correoElectronico == request.form["nombre"])
-    return jsonify(model_to_dict(artista))
+
+    resultado = {"idArtista": artista.idArtista, "nombre": artista.nombre, "biografia": artista.biografia, 
+                "correoElectronico": artista.correoElectronico, "password": artista.password, 
+                "idGenero": artista.idGenero.idGenero}
+
+    return jsonify(resultado)
 
 @app.route("/artista/subirFoto", methods=["POST"])
 def subir_foto_artista():
@@ -234,10 +239,10 @@ def agregar_cancion():
         try:
             cancion = Cancion.create(
                 nombre = request.form['nombre'],
-                idAlbum = request.form['idAlbum'],
-                idGenero = request.form['idGenero'],
+                idAlbum = int (request.form['idAlbum']),
+                idGenero = int (request.form['idGenero']),
                 cancion = request.form['cancion'],
-                duracion = request.form['duracion'],
+                duracion = int (request.form['duracion']),
             )
             mensaje = 14
         except IntegrityError:
@@ -282,6 +287,24 @@ def recuperar_todas_canciones():
     
     return jsonify(songs)
 
+@app.route("/cancion/actualizarRuta", methods=["POST"])
+def actualizar_ruta():
+    try:
+        ultima = Cancion.select().order_by(Cancion.idCancion.desc()).get()
+        cancion = Cancion.select().where(Cancion.idCancion == ultima.idCancion).get()
+        cancion.cancion = request.form["ruta"]
+        cancion.save()
+        mensaje = 400
+    except IntegrityError:
+        mensaje = 401
+    return jsonify(mensaje)
+
+@app.route("/cancion/nombreUltimaCancion", methods=["GET"])
+def nombre_ultima_cancion():
+    query = Cancion.select().order_by(Cancion.idCancion.desc()).get()
+
+    return jsonify(query.nombre)
+
 """Álbum WS"""
 
 @app.route("/album/agregar", methods=["POST"])
@@ -293,12 +316,21 @@ def agregar_album():
                 portada = request.form['portada'],
                 fechaLanzamiento = request.form['fechaLanzamiento'],
                 companiaDiscografica = request.form['companiaDiscografica'],
-                idArtista = request.form['idArtista']
+                idArtista = int (request.form['idArtista']) 
             )
             mensaje = 10
         except IntegrityError:
             mensaje = 11
     return jsonify(mensaje)
+
+@app.route("/album/recuperarUltimo", methods=["GET"])
+def recuperar_ultimo_album():
+    query = Album.select().join(Artista).order_by(Album.idAlbum.desc()).get()
+    
+    album = {"idAlbum": query.idAlbum, "nombre": query.nombre, "portada": None, "fechaLanzamiento": None, 
+    "companiaDiscografica": None, "idArtista": query.idArtista.idArtista}
+
+    return jsonify(album)
 
 """Playlist WS"""
 

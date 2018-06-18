@@ -14,14 +14,13 @@ public class Cancion {
     private String nombre;
     private Integer idAlbum;
     private Integer idGenero;
-    private Object cancion;
+    private String cancion;
     private Integer duracion;
 
     public Cancion() {
     }
 
-    public Cancion(Integer idCancion, String nombre, Integer idAlbum, Integer idGenero, Object cancion, Integer duracion) {
-        this.idCancion = idCancion;
+    public Cancion(String nombre, Integer idAlbum, Integer idGenero, String cancion, Integer duracion) {
         this.nombre = nombre;
         this.idAlbum = idAlbum;
         this.idGenero = idGenero;
@@ -61,11 +60,11 @@ public class Cancion {
         this.idGenero = idGenero;
     }
 
-    public Object getCancion() {
+    public String getCancion() {
         return cancion;
     }
 
-    public void setCancion(Object cancion) {
+    public void setCancion(String cancion) {
         this.cancion = cancion;
     }
 
