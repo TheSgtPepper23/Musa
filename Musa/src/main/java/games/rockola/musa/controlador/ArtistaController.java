@@ -119,6 +119,31 @@ public class ArtistaController implements Initializable {
             return cell ;
         });
         
+        listaAlbumes.setCellFactory(lv -> {
+            ImageView vista = new ImageView();
+            ListCell<Image> cell = new ListCell<>();
+            
+            cell.itemProperty().addListener((obs, oldItem, newItem) -> {
+                vista.setFitHeight(100);
+                vista.setFitWidth(100);
+                if (newItem != null) {
+                    try {
+                        vista.setImage(newItem);
+                    } catch (Exception ex) {}
+                }
+            });
+            
+            cell.emptyProperty().addListener((obs, wasEmpty, isEmpty) -> {
+                if (isEmpty) {
+                    cell.setGraphic(null);
+                } else {
+                    cell.setGraphic(vista);
+                }
+            });
+            cell.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+            return cell ;
+        });
+        
         Mensaje mensaje = HttpUtils.recuperarFotosArtista(artista.getIdArtista());
         Type listaFotos = new TypeToken<ArrayList<FotoArtista>>(){}.getType();
         List<FotoArtista> fotosRecuperadas = new Gson().fromJson(mensaje.getMensaje(), listaFotos);
