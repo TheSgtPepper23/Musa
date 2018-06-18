@@ -1,14 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package games.rockola.musa.controlador;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import games.rockola.musa.servicios.Dialogo;
 import games.rockola.musa.servicios.Imagen;
 import games.rockola.musa.servicios.SubirCancion;
 import games.rockola.musa.ws.HttpUtils;
@@ -22,6 +18,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ButtonType;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -115,6 +112,10 @@ public class AgregarAlbumController implements Initializable {
             SubirCancion subirCancion = new SubirCancion();
             subirCancion.subir(cancion);
         }
+        
+        Dialogo dialogoExito = new Dialogo("1010", ButtonType.OK);
+        dialogoExito.showAndWait();
+        cerrarDialogo();
         
     }
     

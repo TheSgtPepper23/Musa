@@ -17,6 +17,8 @@ public class Dialogo extends Alert{
     //300 - Contraseñas no coinciden
     //800 - no hay siguiente
     //700 - no hay anterior
+    //1010 - album correcto
+    //1011 - album error
 
     
     public Dialogo (String estado, ButtonType... buttons) { 
@@ -28,13 +30,13 @@ public class Dialogo extends Alert{
            getClass().getResource("/styles/Styles.css").toExternalForm());
         dialog.getStyleClass().add("Dialogos");
         
-        if (estado.equals("5") || estado.equals("4") || estado.equals("16") || estado.equals("12")) {
+        if (estado.equals("5") || estado.equals("4") || estado.equals("16") || estado.equals("12") || estado.equals("1010")) {
             this.setAlertType(AlertType.INFORMATION);
             this.setHeaderText("¡Éxito!");
             this.setTitle("¡Éxito!"); 
         } else if (estado.equals("1") || estado.equals("2") || estado.equals("3") || 
                 estado.equals("6") || estado.equals("300") || estado.equals("13") || 
-                estado.equals("700") || estado.equals("800")) {
+                estado.equals("700") || estado.equals("800") || estado.equals("1011")) {
             this.setAlertType(AlertType.WARNING);
             this.setHeaderText("¡Atención!");
             this.setTitle("¡Atención!");
@@ -67,6 +69,12 @@ public class Dialogo extends Alert{
                 break;
             case "800":
                 this.setContentText("No hay ninguna canción por reproducir");
+                break;
+            case "1010":
+                this.setContentText("El álbum se guardó correctamente");
+                break;
+            case "1011":
+                this.setContentText("Ocurrió un error al guardar el álbum");
                 break;
             default:
                 this.setContentText("El mensaje " + estado + " no está registrado");
