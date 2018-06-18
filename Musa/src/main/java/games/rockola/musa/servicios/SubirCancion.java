@@ -16,7 +16,7 @@ public class SubirCancion {
 
     public void subir(File archivo) {
         try {
-            host = InetAddress.getLocalHost();
+            host = InetAddress.getByName("206.189.124.168");
         } catch (UnknownHostException ex) {
             System.out.println("ID del host no encontrado");
             System.exit(1);

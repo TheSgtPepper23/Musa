@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -227,10 +229,6 @@ public class PrincipalController implements Initializable {
         columnaArtista.setCellValueFactory(new PropertyValueFactory("artista"));
         columnaDuracion.setCellValueFactory(new PropertyValueFactory("duracion"));
         tablaCanciones.setItems(listaObservable);
-
-        for (ListaCancion cancion : canciones) {
-            System.out.println(cancion.getDuracion());
-        }
     }
 
     private void llenarPlaylists() {
@@ -307,6 +305,13 @@ public class PrincipalController implements Initializable {
         
         if(reproduciendo) {
             pausar();
+        }
+        Mensaje portadaMensaje = HttpUtils.recuperarPortada(cancion.getAlbum());
+        String portada = portadaMensaje.getMensaje();
+        try {
+            imageAlbum.setImage(Imagen.decodificarImagen(portada));
+        } catch (Exception ex) {
+            Logger.getLogger(PrincipalController.class.getName()).log(Level.SEVERE, null, ex);
         }
         actual = cancion;
         labelTitulo.setText(cancion.getNombre());
@@ -422,7 +427,35 @@ public class PrincipalController implements Initializable {
         Optional<String> nombreLista = dialog.showAndWait();
 
         if(nombreLista.isPresent()) {
-            System.out.println(nombreLista.get());
+            try {
+                Playlist playlist = new Playlist(campoNombre.getText(), 
+                        Imagen.codificarImagen(new File(rutaImagen.getText())), 
+                        LoginController.melomanoLogueado.getIdMelomano());
+                
+                HttpUtils.agregarPlaylist(playlist);
+                
+                llenarPlaylists();
+                agregarMenus();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
+    }
+    
+    @FXML
+    public void mostrarHistorial() {
+        List<ListaCancion> canciones;
+
+        Mensaje mensaje = HttpUtils.consultarMelomano(LoginController.melomanoLogueado.getIdMelomano());
+        Type listaCanciones = new TypeToken<ArrayList<ListaCancion>>() {
+        }.getType();
+        canciones = new Gson().fromJson(mensaje.getMensaje(), listaCanciones);
+
+        ObservableList<ListaCancion> listaObservable = FXCollections.observableArrayList(canciones);
+        columnaTitulo.setCellValueFactory(new PropertyValueFactory("nombre"));
+        columnaAlbum.setCellValueFactory(new PropertyValueFactory("album"));
+        columnaArtista.setCellValueFactory(new PropertyValueFactory("artista"));
+        columnaDuracion.setCellValueFactory(new PropertyValueFactory("duracion"));
+        tablaCanciones.setItems(listaObservable);
     }
 }

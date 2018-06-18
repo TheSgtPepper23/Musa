@@ -7,7 +7,7 @@ from base64 import b64encode
 app = Flask(__name__)
 
 musa_db = MySQLDatabase(
-    "musa", host="localhost", port=3306, user="root", passwd="Emilio08")
+    "musa", host="localhost", port=3306, user="euterpe", passwd="An6248322")
 
 class MySQLModel(Model):
     """Database model"""
@@ -192,7 +192,7 @@ def actualizar_artista():
 
 @app.route("/artista/recuperarArtista", methods=["POST"])
 def recuperar_artista():
-    artista = Artista.get(Artista.correoElectronico == request.form["nombre"])
+    artista = Artista.select().where(Artista.correoElectronico == request.form["nombre"]).get() 
 
     resultado = {"idArtista": artista.idArtista, "nombre": artista.nombre, "biografia": artista.biografia, 
                 "correoElectronico": artista.correoElectronico, "password": artista.password, 
@@ -352,6 +352,12 @@ def recuperar_de_artista():
     
     return jsonify(albumes)
 
+@app.route("/album/recuperarFoto", methods=["POST"])
+def recuperar_foto_album():
+    query = Album.select().where(Album.nombre == request.form["nombre"]).get()
+
+    return jsonify(query.portada)
+
 """Playlist WS"""
 
 @app.route("/playlist/recuperarMelomano", methods=["POST"])
@@ -390,6 +396,20 @@ def recuperar_de_playlist():
         songs.append(song)
 
     return jsonify(songs)
+
+@app.route("/playlist/agregarPlaylist", methods=["POST"])
+def agregar_playlist():
+    with musa_db.atomic():
+        try:
+            playlist = Playlist.create(
+                nombre = request.form['nombre'],
+                portada = request.form['portada'],
+                idMelomano = request.form['idMelomano']
+            )
+            mensaje = 900
+        except IntegrityError:
+            mensaje = 901
+        return jsonify(mensaje)
 
 """Historial WS"""
 
@@ -438,4 +458,4 @@ def recuperar_generos():
     return jsonify(generos)
 
 if __name__ == "__main__":
-    app.run(host = '127.0.0.1', port = '5555', debug = True)
+    app.run(host = '206.189.124.168', port = '5555', debug = True)

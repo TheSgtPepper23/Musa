@@ -6,6 +6,7 @@ import games.rockola.musa.ws.pojos.Cancion;
 import games.rockola.musa.ws.pojos.FotoArtista;
 import games.rockola.musa.ws.pojos.Mensaje;
 import games.rockola.musa.ws.pojos.Melomano;
+import games.rockola.musa.ws.pojos.Playlist;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -20,7 +21,7 @@ import java.util.logging.Logger;
 
 public class HttpUtils {
 
-    private static final String URL = "http://127.0.0.1:5555/";
+    private static final String URL = "http://206.189.124.168:5555/";
     
     public static Mensaje agregarUsuario(Melomano melomano) {
         String params = null;
@@ -160,6 +161,17 @@ public class HttpUtils {
     
     public static Mensaje getUltimoHistorial() {
         return invocarServicioWeb("historial/getUltimoHistorial", "GET", null);
+    }
+    
+    public static Mensaje recuperarPortada(String nombre) {
+        String params = String.format("nombre=%s", nombre);
+        return invocarServicioWeb("album/recuperarFoto", "POST", params);
+    }
+    
+    public static Mensaje agregarPlaylist(Playlist playlist) {
+        String params = String.format("nombre=%s&portada=%s&idMelomano=%s", 
+                playlist.getNombre(), playlist.getPortada(), playlist.getIdMelomano());
+        return invocarServicioWeb("playlist/agregarPlaylist", "POST", params);
     }
     
     private static Mensaje invocarServicioWeb(String url, String tipoinvocacion, String parametros){

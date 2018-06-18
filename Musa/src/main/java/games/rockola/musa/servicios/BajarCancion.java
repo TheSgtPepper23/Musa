@@ -28,7 +28,7 @@ public class BajarCancion {
         
         try {
 
-            server = new Socket(InetAddress.getByName("127.0.0.1"), 7171);
+            server = new Socket(InetAddress.getByName("206.189.124.168"), 7171);
             
             in = server.getInputStream();
             

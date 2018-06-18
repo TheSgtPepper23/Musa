@@ -140,7 +140,7 @@
                                     <content>
                                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                              <children>
-                                                <JFXButton fx:id="btnHistorial" prefHeight="27.0" prefWidth="250.0" text="Historial" />
+                                                <JFXButton fx:id="btnHistorial" onAction="#mostrarHistorial" prefHeight="27.0" prefWidth="250.0" text="Historial" />
                                              </children>
                                           </AnchorPane>
                                     </content>
