@@ -299,12 +299,11 @@ public class PrincipalController implements Initializable {
 
     @FXML
     public void reproducir(ListaCancion cancion) {
-        
-        Mensaje mensajeRuta = HttpUtils.rutaCancionID(cancion.getIdCancion());
-        String ruta = mensajeRuta.getMensaje();
+        actual = cancion;
+        HttpUtils.agregarHistorial(actual.getIdCancion(), LoginController.melomanoLogueado.getIdMelomano());
         
         BajarCancion bajar = new BajarCancion();
-        bajar.bajar(ruta, cancion.getNombre(), cancion.getArtista(), cancion.getAlbum());
+        bajar.bajar(cancion.getNombre(), cancion.getArtista(), cancion.getAlbum());
         
         if(reproduciendo) {
             pausar();

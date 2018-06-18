@@ -148,6 +148,20 @@ public class HttpUtils {
         return invocarServicioWeb("cancion/cancionAPartirDeID", "POST", params);
     }
     
+    public static Mensaje agregarHistorial(Integer idCancion, Integer idMelomano) {
+        String params = String.format("idCancion=%s&idMelomano=%s", idCancion, idMelomano);
+        return invocarServicioWeb("historial/agregarHistorial", "POST", params);
+    }
+    
+    public static Mensaje consultarMelomano(Integer idMelomano) {
+        String params = String.format("idMelomano=%s", idMelomano);
+        return invocarServicioWeb("historial/consultarMelomano", "POST", params);
+    }
+    
+    public static Mensaje getUltimoHistorial() {
+        return invocarServicioWeb("historial/getUltimoHistorial", "GET", null);
+    }
+    
     private static Mensaje invocarServicioWeb(String url, String tipoinvocacion, String parametros){
         HttpURLConnection c = null;
         URL u = null;

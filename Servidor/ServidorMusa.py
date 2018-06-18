@@ -398,8 +398,8 @@ def agregar_historial():
     with musa_db.atomic():
         try:
             historial = Historial.create(
-                idCancion = request.form['idCancion'],
-                idMelomano = request.form['idMelomano']
+                idCancion = int(request.form['idCancion']),
+                idMelomano = int(request.form['idMelomano'])
             )
             mensaje = 500
         except IntegrityError:
@@ -421,7 +421,7 @@ def consultar_historial():
 
 @app.route("/historial/getUltimoHistorial", methods=["GET"])
 def ultimo_historial():
-    query = Historial.select().join(Cancion).get()
+    query = Historial.select().join(Cancion).order_by(Historial.idHistorial.desc()).get()
 
     return jsonify(query.idCancion.cancion)
 
