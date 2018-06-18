@@ -135,5 +135,10 @@
             <artifactId>commons-io</artifactId>
             <version>2.6</version>
         </dependency>
+        <dependency>
+            <groupId>jlmp3</groupId>
+            <artifactId>jlmp3</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 </project>

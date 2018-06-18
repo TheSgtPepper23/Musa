@@ -23,7 +23,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="games.rockola.musa.controlador.PrincipalController">
+<AnchorPane prefHeight="720.0" prefWidth="1052.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="games.rockola.musa.controlador.PrincipalController">
    <children>
       <BorderPane stylesheets="@../styles/Styles.css">
          <top>
@@ -74,7 +74,7 @@
                                           <FontAwesomeIconView fill="WHITE" glyphName="BACKWARD" size="15" stroke="WHITE" strokeLineCap="ROUND" textAlignment="CENTER" />
                                        </graphic>
                                     </JFXButton>
-                                    <JFXButton fx:id="btnPlay" alignment="CENTER_RIGHT" contentDisplay="CENTER" ellipsisString="" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 20;" text=" " textAlignment="CENTER">
+                                    <JFXButton fx:id="btnPlay" alignment="CENTER_RIGHT" contentDisplay="CENTER" ellipsisString="" onAction="#pausar" prefHeight="40.0" prefWidth="40.0" style="-fx-background-radius: 20;" text=" " textAlignment="CENTER">
                                        <graphic>
                                           <FontAwesomeIconView fill="WHITE" glyphName="PLAY" size="20" stroke="WHITE" strokeLineCap="ROUND" strokeWidth="4.0" />
                                        </graphic>
@@ -116,40 +116,49 @@
               <items>
                 <AnchorPane maxWidth="250.0" minHeight="0.0" minWidth="230.0" prefHeight="491.0" prefWidth="250.0">
                      <children>
-                        <Accordion layoutX="30.0" prefHeight="503.0" prefWidth="250.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                          <panes>
-                            <TitledPane animated="false" text="Playlists">
-                              <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                       <children>
-                                          <TableView fx:id="tablaListas" prefHeight="421.0" prefWidth="248.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                             <columns>
-                                                <TableColumn fx:id="columnaListas" prefWidth="75.0" />
-                                             </columns>
-                                             <columnResizePolicy>
-                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                             </columnResizePolicy>
-                                          </TableView>
-                                       </children>
-                                    </AnchorPane>
-                              </content>
-                            </TitledPane>
-                            <TitledPane animated="false" text="Biblioteca">
-                              <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                              </content>
-                            </TitledPane>
-                          </panes>
-                        </Accordion>
-                        <HBox alignment="CENTER_LEFT" layoutY="486.0" prefHeight="84.0" prefWidth="250.0" spacing="20.0">
+                        <VBox>
                            <children>
-                              <FontAwesomeIconView fill="WHITE" glyphName="SEARCH" size="25" />
-                              <JFXTextField fx:id="tfBuscar" labelFloat="true" onAction="#onEnter" prefHeight="27.0" prefWidth="192.0" promptText="Buscar" />
+                              <Accordion prefHeight="448.0" prefWidth="250.0">
+                                <panes>
+                                  <TitledPane animated="false" text="Playlists">
+                                    <content>
+                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <TableView fx:id="tablaListas" prefHeight="421.0" prefWidth="248.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <columns>
+                                                      <TableColumn fx:id="columnaListas" prefWidth="75.0" />
+                                                   </columns>
+                                                   <columnResizePolicy>
+                                                      <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                                   </columnResizePolicy>
+                                                </TableView>
+                                             </children>
+                                          </AnchorPane>
+                                    </content>
+                                  </TitledPane>
+                                  <TitledPane animated="false" text="Biblioteca">
+                                    <content>
+                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <JFXButton fx:id="btnHistorial" prefHeight="27.0" prefWidth="250.0" text="Historial" />
+                                             </children>
+                                          </AnchorPane>
+                                    </content>
+                                  </TitledPane>
+                                </panes>
+                              </Accordion>
+                              <JFXButton fx:id="btnAgregarPlaylist" onAction="#agregarPlayList" prefHeight="38.0" prefWidth="250.0" text="Agregar Playlist" />
+                              <HBox alignment="CENTER_LEFT" prefHeight="84.0" prefWidth="250.0" spacing="20.0">
+                                 <children>
+                                    <FontAwesomeIconView fill="WHITE" glyphName="SEARCH" size="25" />
+                                    <JFXTextField fx:id="tfBuscar" labelFloat="true" onAction="#onEnter" prefHeight="27.0" prefWidth="192.0" promptText="Buscar" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </HBox>
                            </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </HBox>
+                        </VBox>
                      </children>
                   </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="570.0" prefWidth="100.0">
@@ -186,6 +195,6 @@
             </SplitPane>
          </center>
       </BorderPane>
-      <JFXDrawer fx:id="drawerPrincipal" defaultDrawerSize="470.0" direction="RIGHT" onMouseClicked="#ocultarDrawer" prefHeight="720.0" prefWidth="1152.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <JFXDrawer fx:id="drawerPrincipal" defaultDrawerSize="470.0" direction="RIGHT" layoutX="10.0" layoutY="10.0" onMouseClicked="#ocultarDrawer" prefHeight="720.0" prefWidth="1152.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
    </children>
 </AnchorPane>

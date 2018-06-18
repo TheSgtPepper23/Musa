@@ -305,6 +305,12 @@ def nombre_ultima_cancion():
 
     return jsonify(query.nombre)
 
+@app.route("/cancion/cancionAPartirDeID", methods=["POST"])
+def cancion_ruta_id():
+    query = Cancion.select().where(Cancion.idCancion == request.form['idCancion']).get();
+
+    return jsonify(query.cancion)
+
 """Álbum WS"""
 
 @app.route("/album/agregar", methods=["POST"])

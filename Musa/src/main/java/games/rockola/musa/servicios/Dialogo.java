@@ -15,6 +15,8 @@ public class Dialogo extends Alert{
     //4 - Usuario registrado
     //6 - El usuario ya existe
     //300 - Contraseñas no coinciden
+    //800 - no hay siguiente
+    //700 - no hay anterior
 
     
     public Dialogo (String estado, ButtonType... buttons) { 
@@ -31,7 +33,8 @@ public class Dialogo extends Alert{
             this.setHeaderText("¡Éxito!");
             this.setTitle("¡Éxito!"); 
         } else if (estado.equals("1") || estado.equals("2") || estado.equals("3") || 
-                estado.equals("6") || estado.equals("300") || estado.equals("13")) {
+                estado.equals("6") || estado.equals("300") || estado.equals("13") || 
+                estado.equals("700") || estado.equals("800")) {
             this.setAlertType(AlertType.WARNING);
             this.setHeaderText("¡Atención!");
             this.setTitle("¡Atención!");
@@ -58,6 +61,12 @@ public class Dialogo extends Alert{
                 break;
             case "13":
                 this.setContentText("Ocurrió un error al guardar al artista");
+                break;
+            case "700":
+                this.setContentText("No hay ninguna canción anterior");
+                break;
+            case "800":
+                this.setContentText("No hay ninguna canción por reproducir");
                 break;
             default:
                 this.setContentText("El mensaje " + estado + " no está registrado");

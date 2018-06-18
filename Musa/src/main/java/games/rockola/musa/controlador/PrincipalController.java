@@ -6,27 +6,39 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXSlider;
 import com.jfoenix.controls.JFXTextField;
+import games.rockola.musa.servicios.BajarCancion;
+import games.rockola.musa.servicios.Dialogo;
 import games.rockola.musa.servicios.Imagen;
-import games.rockola.musa.servicios.SubirCancion;
+import games.rockola.musa.servicios.Music;
 import games.rockola.musa.ws.HttpUtils;
 import games.rockola.musa.ws.pojos.ListaCancion;
 import games.rockola.musa.ws.pojos.Melomano;
 import games.rockola.musa.ws.pojos.Mensaje;
 import games.rockola.musa.ws.pojos.Playlist;
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -36,6 +48,10 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.StageStyle;
 
 public class PrincipalController implements Initializable {
 
@@ -44,7 +60,7 @@ public class PrincipalController implements Initializable {
 
     @FXML
     private Label labelTitulo;
-    
+
     @FXML
     private Label labelPlaylistTitulo;
 
@@ -108,19 +124,24 @@ public class PrincipalController implements Initializable {
     @FXML
     private TableColumn columnaDuracion;
 
+    @FXML
+    private Button btnAgregarPlaylist;
+    
     static Melomano melomano;
     static ArrayList<Playlist> playlistMelomano;
     static ListaCancion actual;
-    
+
     static ArrayList<ListaCancion> listaReproduccionSiguientes = new ArrayList();
     static ArrayList<ListaCancion> listaReproduccionAnteriores = new ArrayList();
+
+    static boolean reproduciendo = false;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+
         try {
             Parent config = FXMLLoader.load(getClass().getResource("/fxml/PanelConfig.fxml"));
             drawerPrincipal.setSidePane(config);
@@ -144,9 +165,9 @@ public class PrincipalController implements Initializable {
         llenarPlaylists();
         llenarListaCanciones();
         agregarMenus();
-        
-        tablaCanciones.setRowFactory( tv -> {
-            TableRow <ListaCancion> row = new TableRow<>();
+
+        tablaCanciones.setRowFactory(tv -> {
+            TableRow<ListaCancion> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (!row.isEmpty())) {
                     ListaCancion cancion = row.getItem();
@@ -155,8 +176,8 @@ public class PrincipalController implements Initializable {
             });
             return row;
         });
-        tablaListas.setRowFactory( tv -> {
-            TableRow <Playlist> row = new TableRow<>();
+        tablaListas.setRowFactory(tv -> {
+            TableRow<Playlist> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (!row.isEmpty())) {
                     llenarListaDeCancionesDePlaylist(row.getItem());
@@ -173,7 +194,7 @@ public class PrincipalController implements Initializable {
             drawerPrincipal.setDisable(true);
         }
     }
-    
+
     private void llenarListaDeCancionesDePlaylist(Playlist playlist) {
         labelPlaylistTitulo.setText(playlist.getNombre());
         List<ListaCancion> canciones;
@@ -206,8 +227,8 @@ public class PrincipalController implements Initializable {
         columnaArtista.setCellValueFactory(new PropertyValueFactory("artista"));
         columnaDuracion.setCellValueFactory(new PropertyValueFactory("duracion"));
         tablaCanciones.setItems(listaObservable);
-        
-        for(ListaCancion cancion: canciones) {
+
+        for (ListaCancion cancion : canciones) {
             System.out.println(cancion.getDuracion());
         }
     }
@@ -221,13 +242,13 @@ public class PrincipalController implements Initializable {
         }.getType();
         playlists = new Gson().fromJson(mensaje.getMensaje(), typePlay);
 
-        playlistMelomano = (ArrayList)playlists;
+        playlistMelomano = (ArrayList) playlists;
 
         ObservableList<Playlist> listaObservable = FXCollections.observableArrayList(playlists);
         columnaListas.setCellValueFactory(new PropertyValueFactory("nombre"));
         tablaListas.setItems(listaObservable);
     }
-    
+
     private void agregarMenus() {
         MenuItem agregarFinalMI = new MenuItem("Agregar canción al final");
         agregarFinalMI.setOnAction((ActionEvent event) -> {
@@ -244,7 +265,7 @@ public class PrincipalController implements Initializable {
         playlistMelomano.forEach((item) -> {
             MenuItem lista = new MenuItem(item.getNombre());
             lista.setOnAction((ActionEvent event) -> {
-                Mensaje mensaje = HttpUtils.agregaAPlaylist(item.getIdPlaylist(), 
+                Mensaje mensaje = HttpUtils.agregaAPlaylist(item.getIdPlaylist(),
                         tablaCanciones.getSelectionModel().getSelectedItem().getIdCancion());
             });
             agregarPlaylist.getItems().add(lista);
@@ -275,35 +296,134 @@ public class PrincipalController implements Initializable {
             tablaCanciones.setItems(listaObservable);
         }
     }
-    
-    private void reproducir(ListaCancion cancion) {
+
+    @FXML
+    public void reproducir(ListaCancion cancion) {
+        
+        Mensaje mensajeRuta = HttpUtils.rutaCancionID(cancion.getIdCancion());
+        String ruta = mensajeRuta.getMensaje();
+        
+        BajarCancion bajar = new BajarCancion();
+        bajar.bajar(ruta, cancion.getNombre(), cancion.getArtista(), cancion.getAlbum());
+        
+        if(reproduciendo) {
+            pausar();
+        }
         actual = cancion;
         labelTitulo.setText(cancion.getNombre());
         labelArtista.setText(cancion.getArtista());
         labelFin.setText(cancion.getDuracion());
-        
-        //Aquí va el método para recuperar el archivo de la canción
+        Music.reproducir("/Users/lalo/Andres/Descargas/" + cancion.getArtista() + "/" + 
+                cancion.getAlbum() + "/" + cancion.getNombre());
+        reproduciendo = true;
     }
-    
+
     @FXML
-    public void retrocederCancion(){
-        if (listaReproduccionAnteriores != null) {
+    public void pausar() {
+        Music.detener();
+        reproduciendo = false;
+    }
+
+    @FXML
+    public void retrocederCancion() {
+        if (!listaReproduccionAnteriores.isEmpty()) {
             reproducir(listaReproduccionAnteriores.get(listaReproduccionAnteriores.size() - 1));
             listaReproduccionAnteriores.add(0, actual);
             listaReproduccionAnteriores.remove(listaReproduccionAnteriores.size() - 1);
         } else {
-            //¿Diálogo?
+            Dialogo dialogo = new Dialogo("700", ButtonType.OK);
+            dialogo.show();
         }
     }
-    
+
     @FXML
-    public void pasarCancion(){
-        if (listaReproduccionSiguientes != null) {
+    public void pasarCancion() {
+        if (!listaReproduccionSiguientes.isEmpty()) {
             reproducir(listaReproduccionSiguientes.get(0));
             listaReproduccionAnteriores.add(actual);
             listaReproduccionSiguientes.remove(0);
         } else {
-            //Diálogo de no hay más canciones siguientes
+            Dialogo dialogo = new Dialogo("800", ButtonType.OK);
+            dialogo.show();
+        }
+    }
+    
+    @FXML
+    public void agregarPlayList() {
+        Dialog dialog = new Dialog<>();
+        dialog.setTitle(null);
+        dialog.setHeaderText("Agregar nueva playlist");
+        
+        DialogPane dialogPane = dialog.getDialogPane();
+        dialogPane.getStylesheets().add(
+           getClass().getResource("/styles/Styles.css").toExternalForm());
+        dialogPane.getStyleClass().add("Dialogos");
+        
+        ButtonType listaType = new ButtonType("Agregar", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(listaType, ButtonType.CANCEL);
+        
+        JFXTextField campoNombre = new JFXTextField();
+        campoNombre.setPromptText("Nombre playlist");
+        campoNombre.setLabelFloat(true);
+        campoNombre.setPrefWidth(300);
+        
+        JFXTextField rutaImagen = new JFXTextField();
+        rutaImagen.setPromptText("Ruta imagen");
+        rutaImagen.setLabelFloat(true);
+        rutaImagen.setPrefWidth(300);
+        rutaImagen.setEditable(false);
+        
+        VBox cajaV = new VBox(campoNombre);
+        cajaV.setAlignment(Pos.CENTER);
+        
+        JFXButton btnRuta = new JFXButton("Abrir");
+        btnRuta.setOnAction((event) -> {
+            FileChooser seleccionador = new FileChooser();
+            seleccionador.setInitialDirectory(new File(System.getProperty("user.home")));
+            seleccionador.getExtensionFilters().add(new FileChooser.ExtensionFilter(
+                    "Imágenes", "*.jpg"));
+            File imagen = seleccionador.showOpenDialog(cajaV.getScene().getWindow());
+            if (imagen != null)
+                rutaImagen.setText(imagen.getPath());
+            
+        });
+        
+        HBox cajaH = new HBox(rutaImagen);
+        cajaH.getChildren().add(btnRuta);
+        cajaH.setPrefWidth(300);
+        cajaV.getChildren().add(cajaH);
+        cajaV.setSpacing(20);
+        cajaH.setSpacing(20);
+        
+        Node guardarLista = dialog.getDialogPane().lookupButton(listaType);
+        guardarLista.setDisable(true);
+        
+        campoNombre.textProperty().addListener((observable, oldValue, newValue) -> {
+            guardarLista.setDisable(newValue.trim().isEmpty() || 
+                    rutaImagen.getText().trim().isEmpty());
+        });
+        
+        rutaImagen.textProperty().addListener((observable, oldValue, newValue) -> {
+            guardarLista.setDisable(newValue.trim().isEmpty() ||
+                    campoNombre.getText().trim().isEmpty());
+        });
+        
+        dialog.getDialogPane().setContent(cajaV);
+        Platform.runLater(() -> campoNombre.requestFocus());
+        dialog.getDialogPane().setPrefSize(400, 200);
+        dialog.initStyle(StageStyle.UNDECORATED);
+        
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == listaType) {
+                return campoNombre.getText();
+            }
+            return null;
+        });
+        
+        Optional<String> nombreLista = dialog.showAndWait();
+
+        if(nombreLista.isPresent()) {
+            System.out.println(nombreLista.get());
         }
     }
 }

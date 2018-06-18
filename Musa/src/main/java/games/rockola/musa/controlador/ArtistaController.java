@@ -184,6 +184,7 @@ public class ArtistaController implements Initializable {
         dialog.initStyle(StageStyle.UNDECORATED);
         DialogPane dialogPane = dialog.getDialogPane();
         dialogPane.setContent(anchor);
+        dialogPane.setPrefSize(500, 300);
         dialog.show();
     }
     

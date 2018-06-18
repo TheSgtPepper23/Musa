@@ -143,6 +143,11 @@ public class HttpUtils {
         return invocarServicioWeb("cancion/nombreUltimaCancion", "GET", null);
     }
     
+    public static Mensaje rutaCancionID(Integer idCancion) {
+        String params = String.format("idCancion=%s", idCancion);
+        return invocarServicioWeb("cancion/cancionAPartirDeID", "POST", params);
+    }
+    
     private static Mensaje invocarServicioWeb(String url, String tipoinvocacion, String parametros){
         HttpURLConnection c = null;
         URL u = null;
