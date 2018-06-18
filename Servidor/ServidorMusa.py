@@ -7,7 +7,7 @@ from base64 import b64encode
 app = Flask(__name__)
 
 musa_db = MySQLDatabase(
-    "musa", host="localhost", port=3306, user="root", passwd="Emilio08")
+    "musa", host="localhost", port=3306, user="euterpe", passwd="An6248322")
 
 class MySQLModel(Model):
     """Database model"""

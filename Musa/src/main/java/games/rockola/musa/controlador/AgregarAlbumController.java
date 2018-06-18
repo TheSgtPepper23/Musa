@@ -94,10 +94,11 @@ public class AgregarAlbumController implements Initializable {
         File [] canciones = directorioCanciones.listFiles((dir, name) -> {
             return !name.equals(".DS_Store");
         });
-        
-        for (File cancion : canciones) {
-            new SubirCancion().subir(LoginController.artistaLogueado.getNombre(), tfNombre.getText(), cancion);
+        for(File cancion : canciones) {
+            new SubirCancion().subir(LoginController.artistaLogueado.getNombre(), 
+                    tfNombre.getText(), cancion);
         }
+        
     }
     
     private void activarGuardado () {

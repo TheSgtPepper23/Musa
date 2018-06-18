@@ -25,16 +25,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class
@@ -53,7 +58,7 @@ public class ArtistaController implements Initializable {
     private JFXListView<Image> listaImagenes;
 
     @FXML
-    private JFXListView<File> listaAlbumes;
+    private JFXListView<Image> listaAlbumes;
     
     @FXML
     private JFXButton agregarImagen;
@@ -70,7 +75,6 @@ public class ArtistaController implements Initializable {
         artista = LoginController.artistaLogueado;
         areaBio.setText(artista.getBiografia());
         labelArtista.setText(artista.getNombre());
-        System.out.println(artista.getIdArtista());
         
         listaImagenes.setCellFactory(lv -> {
             ImageView vista = new ImageView();
@@ -129,6 +133,7 @@ public class ArtistaController implements Initializable {
     @FXML
     public void anadirImagen(){
         FileChooser seleccionarFoto = new FileChooser();
+        seleccionarFoto.setInitialDirectory(new File(System.getProperty("user.home")));
         seleccionarFoto.getExtensionFilters().add(new FileChooser.ExtensionFilter(
                 "Imágenes", "*.jpg"));
         File archivo = seleccionarFoto.showOpenDialog(MainApp.getVentana());
@@ -158,12 +163,28 @@ public class ArtistaController implements Initializable {
         Mensaje mensajeEliminar = HttpUtils.eliminarFotosArtista(artista.getIdArtista());
         Mensaje mensajeFotos = HttpUtils.subirFotos(fotos);
         
-        if(mensaje.getMensaje().equals("16") && mensajeFotos.getMensaje().equals("16") && 
-                mensajeEliminar.getEstado().equals("16")){
+        System.out.println(mensaje.getMensaje() + " " + mensajeEliminar.getMensaje() + " " + mensajeFotos.getMensaje());
+        if("16".equals(mensaje.getMensaje()) && "16".equals(mensajeFotos.getMensaje()) && 
+                "16".equals(mensajeEliminar.getMensaje())){
             new Dialogo(mensaje.getMensaje(), ButtonType.OK).show();
         } else {
             new Dialogo("17", ButtonType.OK).show();
         }
+    }
+    
+    @FXML
+    public void nuevoAlbum() {
+        AnchorPane anchor = null;
+        try {
+            anchor = FXMLLoader.load(getClass().getResource("/fxml/AgregarAlbum.fxml"));
+        } catch (IOException ex) {ex.printStackTrace();}
+        
+        Dialog dialog = new Dialog<>();
+        dialog.setTitle("Nuevo album");
+        dialog.initStyle(StageStyle.UNDECORATED);
+        DialogPane dialogPane = dialog.getDialogPane();
+        dialogPane.setContent(anchor);
+        dialog.show();
     }
     
     @FXML

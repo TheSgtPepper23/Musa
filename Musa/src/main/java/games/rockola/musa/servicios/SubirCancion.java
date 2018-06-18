@@ -5,25 +5,23 @@ import java.net.*;
 
 public class SubirCancion{
     
-    Integer PUERTO = 55055;
-    Socket server = null;
-    OutputStream salida = null;
-    byte[] buffer = new byte[1024];
+    static Socket server = null;
+    static PrintStream salida = null;
+    static byte[] buffer = new byte[4096];
    
-    public void subir(String nombreArtista, String nombreAlbum, File archivo) {
+    public static void subir(String nombreArtista, String nombreAlbum, File archivo) {
+        String artista = nombreArtista;
+        String album = nombreAlbum;
+        File cancion = archivo;
         
         try {
-            server = new Socket(InetAddress.getByName("192.168.0.18"), PUERTO);
-            salida = server.getOutputStream();
+            server = new Socket(InetAddress.getByName("192.168.100.38"), 55055);
+            salida = new PrintStream(server.getOutputStream(), true);
             
-            salida.write(nombreArtista.getBytes());
-            salida.flush();
-            salida.write(nombreAlbum.getBytes());
-            salida.flush();
-            salida.write(archivo.getName().getBytes());
-            salida.flush();
-            salida.write(String.valueOf(archivo.length()).getBytes());
-            salida.flush();
+            salida.print(nombreArtista);
+            salida.print(nombreAlbum);
+            salida.print(archivo.getName());
+            salida.print(archivo.length());
             
             FileInputStream fis = new FileInputStream(archivo);
             
