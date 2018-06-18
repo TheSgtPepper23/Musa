@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="300.0" prefWidth="500.0" styleClass="mainFxmlClass" stylesheets="@../styles/Styles.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.141" fx:controller="games.rockola.musa.controlador.AgregarAlbumController">
+   <children>
+      <VBox layoutX="217.0" layoutY="155.0" prefHeight="300.0" prefWidth="500.0" spacing="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <JFXTextField fx:id="tfNombre" labelFloat="true" promptText="Nombre del album">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </JFXTextField>
+            <HBox alignment="CENTER" prefHeight="40.0" prefWidth="360.0" spacing="30.0" VBox.vgrow="NEVER">
+               <children>
+                  <JFXTextField fx:id="tfRutaImagen" editable="false" labelFloat="true" promptText="Ruta de la portada" HBox.hgrow="ALWAYS" />
+                  <JFXButton onAction="#seleccionarPortada" text="Abrir" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="40.0" prefWidth="360.0" spacing="30.0">
+               <children>
+                  <JFXTextField fx:id="tfRutaCanciones" editable="false" labelFloat="true" promptText="Ruta de las canciones (Folder)" HBox.hgrow="ALWAYS" />
+                  <JFXButton onAction="#seleccionarFolder" text="Abrir" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="40.0" VBox.vgrow="NEVER">
+               <children>
+                  <JFXButton onAction="#cerrarDialogo" text="Cancelar" />
+                  <JFXButton fx:id="btnGuardar" onAction="#guardarAlbum" text="Guardar" />
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="30.0" left="50.0" right="50.0" top="30.0" />
+         </padding>
+      </VBox>
+   </children>
+</AnchorPane>
