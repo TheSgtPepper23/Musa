@@ -5,7 +5,6 @@
  */
 package games.rockola.musa.servicios;
 
-import games.rockola.musa.ws.HttpUtils;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -14,9 +13,6 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.commons.io.IOUtils;
 
 /**
@@ -34,15 +30,11 @@ public class BajarCancion {
         
         try {
 
-            try {
-                server = new Socket(InetAddress.getByName("127.0.0.1"), 7171);
-            } catch (UnknownHostException ex) {
-                Logger.getLogger(BajarCancion.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            server = new Socket(InetAddress.getByName("127.0.0.1"), 7171);
             
             pw = new PrintWriter(server.getOutputStream());
             
-            //pw.print(ruta);
+            pw.print(ruta);
             
             in = server.getInputStream();
             

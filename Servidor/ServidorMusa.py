@@ -101,8 +101,9 @@ class FotoArtista(MySQLModel):
     idArtista = ForeignKeyField(Artista, db_column = "idArtista")
 
 class Historial(MySQLModel):
-    nombreUsuario = ForeignKeyField(Melomano, db_column = "idMelomano")
+    idHistorial = PrimaryKeyField()
     idCancion = ForeignKeyField(Cancion, db_column = "idCancion")
+    idMelomano = ForeignKeyField(Melomano, db_column = "idMelomano")
 
 @app.route("/")
 def main():
@@ -338,6 +339,19 @@ def recuperar_ultimo_album():
 
     return jsonify(album)
 
+@app.route("/album/deArtista", methods=["POST"])
+def recuperar_de_artista():
+    query = Album.select().where(Album.idArtista == request.form["idArtista"])
+
+    albumes = []
+    for album in query:
+        alb = {"idAlbum": album.idAlbum, "nombre": album.nombre, "portada": album.portada, 
+        "fechaLanzamiento": album.fechaLanzamiento, "companiaDiscografica": album.companiaDiscografica,
+        "idArtista": album.idArtista.idArtista}
+        albumes.append(alb)
+    
+    return jsonify(albumes)
+
 """Playlist WS"""
 
 @app.route("/playlist/recuperarMelomano", methods=["POST"])
@@ -376,6 +390,40 @@ def recuperar_de_playlist():
         songs.append(song)
 
     return jsonify(songs)
+
+"""Historial WS"""
+
+@app.route("/historial/agregarHistorial", methods=["POST"])
+def agregar_historial():
+    with musa_db.atomic():
+        try:
+            historial = Historial.create(
+                idCancion = request.form['idCancion'],
+                idMelomano = request.form['idMelomano']
+            )
+            mensaje = 500
+        except IntegrityError:
+            mensaje = 501
+        return jsonify(mensaje)
+
+@app.route("/historial/consultarMelomano", methods=["POST"])
+def consultar_historial():
+    query = Historial.select().join(Cancion).join(Album).join(Artista).select().where(
+        Historial.idMelomano == request.form["idMelomano"])
+    
+    songs = []
+    for cancion in query:
+        song = {"idCancion": cancion.idCancion.idCancion, "nombre": cancion.idCancion.nombre, "artista": cancion.idCancion.idAlbum.idArtista.nombre,
+                "album":cancion.idCancion.idAlbum.nombre, "duracion": cancion.idCancion.duracion}
+        songs.append(song)
+
+    return jsonify(songs)
+
+@app.route("/historial/getUltimoHistorial", methods=["GET"])
+def ultimo_historial():
+    query = Historial.select().join(Cancion).get()
+
+    return jsonify(query.idCancion.cancion)
 
 """Género WS"""
 
